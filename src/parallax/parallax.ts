@@ -85,13 +85,19 @@ export default class Parrallax {
 
             const scaleDisplacement = -invIdx * (this.options.depthScale / 2);
 
+            const finalX = x + scaleDisplacement;
+            const finalY = y + scaleDisplacement;
+
             layer.animate({
-                left: `${x + scaleDisplacement}px`,
-                top: `${y + scaleDisplacement}px`
+                left: `${finalX}px`,
+                top: `${finalY}px`
             }, {
                 duration: 2000 + (100 * i),
                 fill: "forwards"
             });
+
+            layer.style.setProperty('--layer-x', `${finalX}`);
+            layer.style.setProperty('--layer-y', `${finalY}`);
         }
     }
 

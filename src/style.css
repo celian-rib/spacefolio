@@ -1,7 +1,5 @@
 body {
-  position: relative;
-  top: 0;
-  left: 0;
+  position: static;
   
   margin: 0;
   padding: 0;
