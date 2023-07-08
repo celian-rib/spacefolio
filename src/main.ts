@@ -12,6 +12,3 @@ const parallax = new Parallax({
 addStarsToParallax(parallax, 300);
 
 parallax.addIdToLayer('title', 0);
-
-// parallax.addIdToLayer('spacecraft', 1);
-// new Spacecraft(document.getElementById('spacecraft')!, 5.3, 0.9);

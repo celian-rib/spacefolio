@@ -1,4 +1,4 @@
-import Parrallax, { Position } from "./parallax";
+import Parrallax from "./parallax";
 
 function createStarElt(layerRoot: SVGElement, layerDepth: number, layerCount: number) {
     const pos = {
