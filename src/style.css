@@ -1,0 +1,37 @@
+body {
+  position: relative;
+  top: 0;
+  left: 0;
+  
+  margin: 0;
+  padding: 0;
+
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: linear-gradient(224deg, #060C18 0%, #061822 100%);
+}
+
+:root {
+  font-family: 'Roboto Mono', monospace;
+}
+
+#title {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 0 10px #fff;
+}
+
+#title h1 {
+  font-size: 2rem;
+  margin: 0;
+}
+
+#title p {
+  font-size: 1.5rem;
+}
