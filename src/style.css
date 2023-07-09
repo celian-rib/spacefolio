@@ -1,6 +1,6 @@
 body {
   position: static;
-  
+
   margin: 0;
   padding: 0;
 
@@ -22,6 +22,7 @@ body {
 
   color: #fff;
   text-align: center;
+  pointer-events: all;
 }
 
 #title h1 {
@@ -30,7 +31,8 @@ body {
   margin: 0;
 }
 
-#title span, #title p {
+#title span,
+#title p {
   font-size: 1.5rem;
   text-shadow: 0 2px 0 #58aed9;
 }
@@ -55,13 +57,21 @@ body {
 
   display: flex;
   flex-direction: column;
+  pointer-events: all;
+}
+
+.direction:hover h2 {
+  transform: scale(1.1);
+  cursor: pointer;
 }
 
 .direction h2 {
-  min-width: 30px;
-  font-size: 1.5rem;
+  min-width: 80px;
+  font-size: 2rem;
   font-weight: bold;
   margin: 0;
+  transition: transform 0.5s ease-in-out;
+  text-shadow: 0 4px 0 #8c58d9;
 }
 
 .direction p {
@@ -69,6 +79,8 @@ body {
   font-weight: normal;
   margin: 0;
   margin-top: 5px;
+  text-shadow: none;
+  opacity: 0.7;
 }
 
 .direction span {
@@ -90,4 +102,20 @@ body {
 
 #dir-4 {
   left: 30%;
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: #fff;
+  font-size: 0.8rem;
+  opacity: 0.7;
 }
