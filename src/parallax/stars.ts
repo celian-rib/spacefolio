@@ -39,7 +39,7 @@ function createLayerStars(layer: HTMLElement, starCount: number, layerDepth: num
 
 export function addStarsToParallax(parralax: Parrallax, starCount: number) {
     const starsPerLayer = Math.floor(starCount / (parralax.getLayers().length - 1));
-    for (let i = 1; i < parralax.getLayers().length; i++) {
+    for (let i = 2; i < parralax.getLayers().length; i++) {
         const layer = parralax.getLayers()[i];
         createLayerStars(layer, starsPerLayer, i, parralax.getLayers().length);
     }

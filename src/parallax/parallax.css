@@ -3,18 +3,14 @@
     width: 100vw;
     height: 100vh;
     
-    /* overflow: hidden; */
-    /* transform: scale(0.5); */
-    outline: blue 2px solid;
+    overflow: hidden;
 }
 
 .parallax-layer {
     position: absolute;
     width: 100vw;
     height: 100vh;
-    outline: red solid 1px;
 }
-
 
 #spacecraft {
     width: 15px;

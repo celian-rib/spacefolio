@@ -11,7 +11,7 @@ body {
 }
 
 :root {
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Chakra Petch', sans-serif;
 }
 
 #title {
@@ -22,14 +22,72 @@ body {
 
   color: #fff;
   text-align: center;
-  text-shadow: 0 0 10px #fff;
 }
 
 #title h1 {
-  font-size: 2rem;
+  text-shadow: 0 5px 0 #58aed9;
+  font-size: 4rem;
   margin: 0;
 }
 
-#title p {
+#title span, #title p {
   font-size: 1.5rem;
+  text-shadow: 0 2px 0 #58aed9;
+}
+
+#title p {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  margin: 10px;
+}
+
+#title:hover p {
+  opacity: 1;
+}
+
+.direction {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  color: #fff;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.direction h2 {
+  min-width: 30px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.direction p {
+  font-size: 0.8rem;
+  font-weight: normal;
+  margin: 0;
+  margin-top: 5px;
+}
+
+.direction span {
+  margin-left: 2px;
+  font-size: 0.5rem;
+}
+
+#dir-1 {
+  top: 30%;
+}
+
+#dir-2 {
+  left: 70%;
+}
+
+#dir-3 {
+  top: 70%;
+}
+
+#dir-4 {
+  left: 30%;
 }
