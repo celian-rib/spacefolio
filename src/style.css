@@ -80,6 +80,7 @@ div#overlay {
 }
 
 footer {
+  pointer-events: all;
   position: absolute;
   bottom: 0;
   left: 0;
@@ -132,7 +133,7 @@ section {
 .fade-initial-1 {
   transition: opacity 1s linear;
   opacity: 1;
-  pointer-events: none;
+  /* pointer-events: none; */
 }
 
 .fade-in {
@@ -143,4 +144,12 @@ section {
 .fade-out {
   opacity: 0;
   pointer-events: none !important;
+}
+
+#dev-info {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  font-size: 0.9rem;
+  color: white;
 }

@@ -37,7 +37,9 @@ export default function registerPlanetsInteractivity(parallax: Parrallax) {
   const sectionBtn = document.querySelector('section button')!;
   sectionBtn.addEventListener('click', () => {
     parallax.unlockPosition();
+
     section.classList.remove('fade-in');
+    footer.classList.remove('fade-out');
 
     parallaxTopLayer.classList.remove('fade-out');
 
