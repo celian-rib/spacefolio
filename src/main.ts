@@ -12,6 +12,8 @@ const parallax = new Parallax({
 
 addStarsToParallax(parallax, 300);
 
+parallax.addIdToLayer('background-texture', 4);
+
 parallax.addIdToLayer('title', 0);
 parallax.addIdToLayer('dir-1', 1);
 parallax.addIdToLayer('dir-2', 1);
