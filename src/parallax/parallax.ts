@@ -56,6 +56,8 @@ export default class Parrallax {
   private layers: HTMLElement[] = [];
   private root: HTMLElement;
 
+  private lockedPosition?: Position;
+
   constructor(options: OptionalParallaxOptions) {
     const root = document.getElementById('parallax-root');
 
@@ -100,7 +102,8 @@ export default class Parrallax {
         y: e.clientY,
       };
 
-      this.updateLayers(mousePos);
+      if (!this.lockedPosition)
+        this.updateLayers(mousePos);
     });
   }
 
@@ -162,7 +165,9 @@ export default class Parrallax {
     }
   }
 
-  private updateLayers(mousePos: Position) {
+  private updateLayers(mousePos: Position, animationDuration: number | null = null) {
+    const duration = animationDuration ?? this.options.animationDuration;
+    
     for (let i = 0; i < this.layers.length; i++) {
       const layer = this.layers[i];
 
@@ -176,7 +181,7 @@ export default class Parrallax {
       layer.animate({
         transform: `translate(${x}px, ${y}px)`,
       }, {
-        duration: this.options.animationDuration + (100 * i),
+        duration: duration + (100 * i),
         fill: "forwards"
       });
     }
@@ -208,5 +213,10 @@ export default class Parrallax {
 
   public getRoot(): HTMLElement {
     return this.root;
+  }
+
+  public lockPosition(pos: Position, animationDuration: number = 1000) {
+    this.lockedPosition = pos;
+    this.updateLayers(pos, animationDuration);
   }
 }
