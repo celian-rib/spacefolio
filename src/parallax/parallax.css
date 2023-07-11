@@ -13,12 +13,13 @@
     pointer-events: none;
 }
 
-#spacecraft {
-    width: 15px;
-    height: 15px;
-    background: #fff;
-    border: solid grey 2px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
+.dev-mode {
+  overflow: unset !important;
+  transform: scale(0.5);
+
+  outline: blue solid 1px !important;
+}
+
+.dev-mode > * {
+  outline: red solid 1px !important;
 }

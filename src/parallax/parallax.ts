@@ -3,17 +3,52 @@ export interface Position {
   y: number;
 }
 
-export interface ParallaxOptions {
-  layerCount: number;
-  speedFactor: number;
-  depthScale: number;
-  animationDuration: number;
+export interface Size {
+  width: number;
+  height: number;
 }
 
-interface OptionalParallaxOptions extends Omit<ParallaxOptions, 'speedFactor' | 'animationDuration' | 'depthScale'> {
-  speedFactor?: number;
-  depthScale?: number;
+export interface ParallaxOptions {
+  /**
+   * Number of layers to create and animate
+   */
+  layerCount: number;
+  /**
+   * By how much the layer should move when the mouse moves
+
+   * Eg: If the factor is 2, the initial layer will move 2 times more than the first layer
+   * (Making its initial size 2 times bigger)
+   * 
+   * @default 2
+   */
+  displacementFactor: number;
+  /**
+   * How much the layer should scale compared to the previous layer (In added pixels,
+   * relative to the previous layer)
+   * If the scale is 300, the initial layer will be 300 pixels bigger than the second layer
+   * 
+   * @default 300
+   */
+  layerScaleDifferencePx: number;
+  /**
+   * How long the animation should last
+   * 
+   * @default 2000
+   */
+  animationDuration: number;
+  /**
+   * If the animation should be inverted (The layers will move in the opposite direction)
+
+   * @default false
+   */
+  inverted?: boolean;
+}
+
+interface OptionalParallaxOptions extends Omit<ParallaxOptions, 'displacementFactor' | 'animationDuration' | 'layerScaleDifferencePx' | 'inverted'> {
+  displacementFactor?: number;
+  layerScaleDifferencePx?: number;
   animationDuration?: number;
+  inverted?: boolean;
 }
 
 export default class Parrallax {
@@ -30,9 +65,10 @@ export default class Parrallax {
     this.root = root;
     this.options = {
       ...options,
-      speedFactor: options.speedFactor ?? 0.5,
-      depthScale: options.depthScale ?? 300,
+      displacementFactor: options.displacementFactor ?? 2,
+      layerScaleDifferencePx: options.layerScaleDifferencePx ?? 300,
       animationDuration: options.animationDuration ?? 2000,
+      inverted: options.inverted ?? false,
     };
 
     this.init();
@@ -42,14 +78,16 @@ export default class Parrallax {
     return this.layers;
   }
 
-  private addLayers() {
+  private createLayers() {
     for (let i = 0; i < this.options.layerCount; i++) {
       const layer = document.createElement('div');
       layer.classList.add('parallax-layer');
 
-      const invIdx = (this.options.layerCount - i);
-      layer.style.width = `calc(100vw + ${invIdx * this.options.depthScale}px)`;
-      layer.style.height = `calc(100vh + ${invIdx * this.options.depthScale}px)`;
+      const { width, height } = this.getLayerSize(i);
+
+      layer.style.width = `${width}px`;
+      layer.style.height = `${height}px`;
+
       this.layers.push(layer);
       this.root.prepend(layer);
     }
@@ -67,29 +105,76 @@ export default class Parrallax {
   }
 
   private init() {
-    this.addLayers();
+    this.createLayers();
     this.addMouseListener();
+  }
+
+  private getLayerPaddingToScreen(layer: number): Size {
+    const halfScreenWidth = window.innerWidth / 2;
+    const halfScreenHeight = window.innerHeight / 2;
+
+    const unitWidth = (this.options.displacementFactor * halfScreenWidth) - halfScreenWidth;
+    const unitHeight = (this.options.displacementFactor * halfScreenHeight) - halfScreenHeight;
+
+    const layerInverse = this.options.layerCount - layer - 1;
+    const layerAddedScale = this.options.layerScaleDifferencePx * layerInverse;
+
+    return {
+      width: unitWidth + layerAddedScale,
+      height: unitHeight + layerAddedScale,
+    }
+  }
+
+  private getLayerSize(layer: number): Size {
+    const layerPaddingToScreen = this.getLayerPaddingToScreen(layer);
+    return {
+      width: window.innerWidth + (2 * layerPaddingToScreen.width),
+      height: window.innerHeight + (2 * layerPaddingToScreen.height),
+    }
+  }
+
+  private getLayerCenteredPosition(layer: number, centMousePos: Position): Position {
+    const screenWidth = window.innerWidth;
+    const screenHeight = window.innerHeight;
+
+    const layerPaddingToScreen = this.getLayerPaddingToScreen(layer);
+
+    if (this.options.inverted) {
+      centMousePos.x = -centMousePos.x;
+      centMousePos.y = -centMousePos.y;
+    }
+
+    const res = {
+      x: (centMousePos.x * layerPaddingToScreen.width) / (screenWidth / 2),
+      y: (centMousePos.y * layerPaddingToScreen.height) / (screenHeight / 2)
+    }
+
+    return res;
+  }
+
+  private getLayerScreenPosition(layer: number, centMousPos: Position): Position {
+    const { x, y } = this.getLayerCenteredPosition(layer, centMousPos);
+    const { width, height } = this.getLayerPaddingToScreen(layer);
+
+    return {
+      x: x - width,
+      y: y - height,
+    }
   }
 
   private updateLayers(mousePos: Position) {
     for (let i = 0; i < this.layers.length; i++) {
       const layer = this.layers[i];
 
-      const centerMouseX = mousePos.x - (window.innerWidth / 2);
-      const centerMouseY = mousePos.y - (window.innerHeight / 2);
+      const centeredMousePos = {
+        x: mousePos.x - (window.innerWidth / 2),
+        y: mousePos.y - (window.innerHeight / 2),
+      };
 
-      const invIdx = (this.options.layerCount - i);
-      const layerFactor = invIdx + 1;
-      const x = centerMouseX * (this.options.speedFactor * layerFactor);
-      const y = centerMouseY * (this.options.speedFactor * layerFactor);
-
-      const scaleDisplacement = -invIdx * (this.options.depthScale / 2);
-
-      const finalX = x + scaleDisplacement;
-      const finalY = y + scaleDisplacement;
+      const { x, y } = this.getLayerScreenPosition(i, centeredMousePos);
 
       layer.animate({
-        transform: `translate(${finalX}px, ${finalY}px)`,
+        transform: `translate(${x}px, ${y}px)`,
       }, {
         duration: this.options.animationDuration + (100 * i),
         fill: "forwards"
@@ -119,5 +204,9 @@ export default class Parrallax {
     layerRoot.appendChild(elt);
 
     return this;
+  }
+
+  public getRoot(): HTMLElement {
+    return this.root;
   }
 }
