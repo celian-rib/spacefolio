@@ -12,7 +12,10 @@
 </head>
 
 <body>
+
   <div id="parallax-root">
+
+    <!-- Linked to generated layers by main.ts -->
     <div id="background-texture"></div>
     <img id="bg-gaz-planet" class="bg-planet" src="/planet5.gif" alt="Planet">
     <img id="bg-black-hole" class="bg-planet" src="/planet6.gif" alt="Planet">
@@ -46,10 +49,18 @@
       <h2>Contact</h2>
       <p></p>
     </div>
+
     <!-- Injected parrallax elements -->
   </div>
+
   <div id="overlay"></div>
-  <footer>
+
+  <section class="fade-initial-0">
+    <button>Go Back</button>
+    <p>Work In Progress...</p>
+  </section>
+
+  <footer class="fade-initial-1">
     <div>
       <label class="switch">
         <input type="checkbox" id="dev-mode-toggle">
@@ -59,6 +70,7 @@
     </div>
     <p>© 2023 Celian Riboulet - Libraries? Nah. We don't do that here.</p>
   </footer>
+
   <script type="module" src="/src/main.ts"></script>
 </body>
 

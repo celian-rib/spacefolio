@@ -1,4 +1,4 @@
-import Parrallax from "./parallax";
+import Parrallax from "../parallax/parallax";
 
 function createStarElt(layerRoot: SVGElement, layerDepth: number, layerCount: number) {
     const pos = {
@@ -37,7 +37,7 @@ function createLayerStars(layer: HTMLElement, starCount: number, layerDepth: num
         createStarElt(svg, layerDepth, layerCount);
 }
 
-export function addStarsToParallax(parralax: Parrallax, starCount: number) {
+export default function addStarsToParallax(parralax: Parrallax, starCount: number) {
     const starsPerLayer = Math.floor(starCount / (parralax.getLayers().length - 1));
     for (let i = 2; i < parralax.getLayers().length; i++) {
         const layer = parralax.getLayers()[i];

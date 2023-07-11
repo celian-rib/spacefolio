@@ -219,4 +219,8 @@ export default class Parrallax {
     this.lockedPosition = pos;
     this.updateLayers(pos, animationDuration);
   }
+
+  public unlockPosition() {
+    this.lockedPosition = undefined;
+  }
 }
