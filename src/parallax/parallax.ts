@@ -57,6 +57,7 @@ export default class Parrallax {
   private root: HTMLElement;
 
   private lockedPosition?: Position;
+  private isTouchDevice: boolean;
 
   constructor(options: OptionalParallaxOptions) {
     const root = document.getElementById('parallax-root');
@@ -72,6 +73,8 @@ export default class Parrallax {
       animationDuration: options.animationDuration ?? 2000,
       inverted: options.inverted ?? false,
     };
+
+    this.isTouchDevice = 'ontouchstart' in window;
 
     this.init();
   }
@@ -95,7 +98,20 @@ export default class Parrallax {
     }
   }
 
+  private addResizeListener() {
+    window.addEventListener('resize', () => {
+      for (let i = 0; i < this.layers.length; i++) {
+        const { width, height } = this.getLayerSize(i);
+        const layer = this.layers[i];
+
+        layer.style.width = `${width}px`;
+        layer.style.height = `${height}px`;
+      }
+    });
+  }
+
   private addMouseListener() {
+    console.log('Parallax started with mouse');
     document.addEventListener('mousemove', (e) => {
       const mousePos = {
         x: e.clientX,
@@ -107,9 +123,35 @@ export default class Parrallax {
     });
   }
 
+  private addTouchListener() {
+    console.log('Parallax started for touch devices');
+    document.addEventListener('touchmove', (e) => {
+      const touch = e.touches[0];
+
+      const mousePos = {
+        x: touch.clientX,
+        y: touch.clientY,
+      };
+
+      if (!this.lockedPosition)
+        this.updateLayers(mousePos);
+    });
+  }
+
   private init() {
     this.createLayers();
-    this.addMouseListener();
+
+    this.addResizeListener();
+
+    if (this.isTouchDevice)
+      this.addTouchListener();
+    else
+      this.addMouseListener();
+
+    this.updateLayers({
+      x: window.innerWidth / 2,
+      y: window.innerHeight / 2,
+    }, 0);
   }
 
   private getLayerPaddingToScreen(layer: number): Size {
@@ -167,7 +209,7 @@ export default class Parrallax {
 
   private updateLayers(mousePos: Position, animationDuration: number | null = null) {
     const duration = animationDuration ?? this.options.animationDuration;
-    
+
     for (let i = 0; i < this.layers.length; i++) {
       const layer = this.layers[i];
 
@@ -177,6 +219,11 @@ export default class Parrallax {
       };
 
       const { x, y } = this.getLayerScreenPosition(i, centeredMousePos);
+
+      if (animationDuration == 0) {
+        layer.style.transform = `translate(${x}px, ${y}px)`;
+        continue;
+      }
 
       layer.animate({
         transform: `translate(${x}px, ${y}px)`,
@@ -222,5 +269,9 @@ export default class Parrallax {
 
   public unlockPosition() {
     this.lockedPosition = undefined;
+  }
+
+  public isTouchDeviceMode() {
+    return this.isTouchDevice;
   }
 }

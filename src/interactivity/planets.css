@@ -36,7 +36,7 @@
   margin: 0;
   margin-top: 5px;
   text-shadow: none;
-  
+
   opacity: 0.7;
   transition: opacity 0.5s ease-in-out;
 }
@@ -75,6 +75,7 @@
 #dir-4 {
   left: 30%;
 }
+
 .bg-planet {
   image-rendering: pixelated;
   image-rendering: -moz-crisp-edges;
@@ -181,6 +182,7 @@
   opacity: 1;
 }
 
-.active-planet h2, .active-planet p {
+.active-planet h2,
+.active-planet p {
   opacity: 0;
 }
