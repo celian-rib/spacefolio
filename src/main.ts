@@ -5,7 +5,8 @@ import './parallax/parallax.css';
 import Parallax from './parallax/parallax.ts';
 
 import './effects/animatedText.ts';
-import './effects/direction.ts';
+import './effects/planetsDistances.ts';
+
 import addStarsToParallax from './effects/stars.ts';
 
 import registerDevMode from './interactivity/devMode.ts';

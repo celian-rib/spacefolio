@@ -8,7 +8,7 @@ const footer = document.querySelector('footer')!;
 const section = document.querySelector('section')!;
 
 export default function registerPlanetsInteractivity(parallax: Parrallax) {
-  const planets = document.querySelectorAll('.direction');
+  const planets = document.querySelectorAll('.planet');
   const parallaxTopLayer = parallax.getLayers()[0];
   parallaxTopLayer.classList.add('fade-initial-1');
 

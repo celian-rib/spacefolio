@@ -1,4 +1,4 @@
-.direction {
+.planet {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -12,13 +12,13 @@
   pointer-events: all;
 }
 
-.direction:hover h2 {
+.planet:hover h2 {
   transform: scale(1.1);
   cursor: pointer;
 
 }
 
-.direction h2 {
+.planet h2 {
   margin-top: 10px;
   font-size: 2rem;
   font-weight: bold;
@@ -30,7 +30,7 @@
   transition: opacity 0.5s ease-in-out;
 }
 
-.direction p {
+.planet p {
   font-size: 0.8rem;
   font-weight: normal;
   margin: 0;
@@ -41,12 +41,12 @@
   transition: opacity 0.5s ease-in-out;
 }
 
-.direction span {
+.planet span {
   margin-left: 2px;
   font-size: 0.5rem;
 }
 
-.direction img {
+.planet img {
   image-rendering: pixelated;
   image-rendering: -moz-crisp-edges;
   image-rendering: crisp-edges;
@@ -55,7 +55,7 @@
   height: 200px;
 }
 
-.direction img:hover {
+.planet img:hover {
   cursor: pointer;
   filter: drop-shadow(0 3px 0 white) drop-shadow(0 -3px 0 white) drop-shadow(3px 0 0 white) drop-shadow(-3px 0 0 white);
 }
