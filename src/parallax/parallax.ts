@@ -26,13 +26,13 @@ export interface ParallaxOptions {
    * How much the layer should scale compared to the previous layer (In added pixels,
    * relative to the previous layer)
    * If the scale is 300, the initial layer will be 300 pixels bigger than the second layer
-   * 
+   *
    * @default 300
    */
   layerScaleDifferencePx: number;
   /**
    * How long the animation should last
-   * 
+   *
    * @default 2000
    */
   animationDuration: number;
@@ -62,8 +62,7 @@ export default class Parrallax {
   constructor(options: OptionalParallaxOptions) {
     const root = document.getElementById('parallax-root');
 
-    if (!root)
-      throw new Error('Could not find parallax root element');
+    if (!root) throw new Error('Could not find parallax root element');
 
     this.root = root;
     this.options = {
@@ -112,20 +111,19 @@ export default class Parrallax {
 
   private addMouseListener() {
     console.log('Parallax started with mouse');
-    document.addEventListener('mousemove', (e) => {
+    document.addEventListener('mousemove', e => {
       const mousePos = {
         x: e.clientX,
         y: e.clientY,
       };
 
-      if (!this.lockedPosition)
-        this.updateLayers(mousePos);
+      if (!this.lockedPosition) this.updateLayers(mousePos);
     });
   }
 
   private addTouchListener() {
     console.log('Parallax started for touch devices');
-    document.addEventListener('touchmove', (e) => {
+    document.addEventListener('touchmove', e => {
       const touch = e.touches[0];
 
       const mousePos = {
@@ -133,33 +131,33 @@ export default class Parrallax {
         y: touch.clientY,
       };
 
-      if (!this.lockedPosition)
-        this.updateLayers(mousePos);
+      if (!this.lockedPosition) this.updateLayers(mousePos);
     });
   }
 
   private init() {
     this.createLayers();
     this.addResizeListener();
-    this.updateLayers({
-      x: window.innerWidth / 2,
-      y: window.innerHeight / 2,
-    }, 0);
+    this.updateLayers(
+      {
+        x: window.innerWidth / 2,
+        y: window.innerHeight / 2,
+      },
+      0,
+    );
   }
-  
+
   public startInteraction() {
-    if (this.isTouchDevice)
-      this.addTouchListener();
-    else
-      this.addMouseListener();
+    if (this.isTouchDevice) this.addTouchListener();
+    else this.addMouseListener();
   }
 
   private getLayerPaddingToScreen(layer: number): Size {
     const halfScreenWidth = window.innerWidth / 2;
     const halfScreenHeight = window.innerHeight / 2;
 
-    const unitWidth = (this.options.displacementFactor * halfScreenWidth) - halfScreenWidth;
-    const unitHeight = (this.options.displacementFactor * halfScreenHeight) - halfScreenHeight;
+    const unitWidth = this.options.displacementFactor * halfScreenWidth - halfScreenWidth;
+    const unitHeight = this.options.displacementFactor * halfScreenHeight - halfScreenHeight;
 
     const layerInverse = this.options.layerCount - layer - 1;
     const layerAddedScale = this.options.layerScaleDifferencePx * layerInverse;
@@ -167,15 +165,15 @@ export default class Parrallax {
     return {
       width: unitWidth + layerAddedScale,
       height: unitHeight + layerAddedScale,
-    }
+    };
   }
 
   private getLayerSize(layer: number): Size {
     const layerPaddingToScreen = this.getLayerPaddingToScreen(layer);
     return {
-      width: window.innerWidth + (2 * layerPaddingToScreen.width),
-      height: window.innerHeight + (2 * layerPaddingToScreen.height),
-    }
+      width: window.innerWidth + 2 * layerPaddingToScreen.width,
+      height: window.innerHeight + 2 * layerPaddingToScreen.height,
+    };
   }
 
   private getLayerCenteredPosition(layer: number, centMousePos: Position): Position {
@@ -191,8 +189,8 @@ export default class Parrallax {
 
     const res = {
       x: (centMousePos.x * layerPaddingToScreen.width) / (screenWidth / 2),
-      y: (centMousePos.y * layerPaddingToScreen.height) / (screenHeight / 2)
-    }
+      y: (centMousePos.y * layerPaddingToScreen.height) / (screenHeight / 2),
+    };
 
     return res;
   }
@@ -204,7 +202,7 @@ export default class Parrallax {
     return {
       x: x - width,
       y: y - height,
-    }
+    };
   }
 
   private updateLayers(mousePos: Position, animationDuration: number | null = null) {
@@ -214,8 +212,8 @@ export default class Parrallax {
       const layer = this.layers[i];
 
       const centeredMousePos = {
-        x: mousePos.x - (window.innerWidth / 2),
-        y: mousePos.y - (window.innerHeight / 2),
+        x: mousePos.x - window.innerWidth / 2,
+        y: mousePos.y - window.innerHeight / 2,
       };
 
       const { x, y } = this.getLayerScreenPosition(i, centeredMousePos);
@@ -225,18 +223,20 @@ export default class Parrallax {
         continue;
       }
 
-      layer.animate({
-        transform: `translate(${x}px, ${y}px)`,
-      }, {
-        duration: duration + (100 * i),
-        fill: "forwards"
-      });
+      layer.animate(
+        {
+          transform: `translate(${x}px, ${y}px)`,
+        },
+        {
+          duration: duration + 100 * i,
+          fill: 'forwards',
+        },
+      );
     }
   }
 
   public addElementToLayer(element: HTMLElement, layer: number): Parrallax {
-    if (layer < 0 || layer > this.options.layerCount)
-      throw new Error(`Layer must be between 0 and ${this.options.layerCount}`);
+    if (layer < 0 || layer > this.options.layerCount) throw new Error(`Layer must be between 0 and ${this.options.layerCount}`);
 
     const layerRoot = this.layers[layer];
     layerRoot.appendChild(element);
@@ -245,12 +245,10 @@ export default class Parrallax {
   }
 
   public addIdToLayer(id: string, layer: number): Parrallax {
-    if (layer < 0 || layer > this.options.layerCount)
-      throw new Error(`Layer must be between 0 and ${this.options.layerCount}`);
+    if (layer < 0 || layer > this.options.layerCount) throw new Error(`Layer must be between 0 and ${this.options.layerCount}`);
 
     const elt = document.getElementById(id);
-    if (!elt)
-      throw new Error(`Could not find element with id ${id}`);
+    if (!elt) throw new Error(`Could not find element with id ${id}`);
 
     const layerRoot = this.layers[layer];
     layerRoot.appendChild(elt);

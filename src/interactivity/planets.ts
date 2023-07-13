@@ -1,6 +1,6 @@
-import './planets.css'
+import './planets.css';
 
-import Parrallax from "../parallax/parallax";
+import Parrallax from '../parallax/parallax';
 
 const LOCK_ANIMATION_DURATION = 100;
 
@@ -20,7 +20,7 @@ export default function registerPlanetsInteractivity(parallax: Parrallax) {
     { x: screenWidth * 0.85, y: screenHeight / 2 },
     { x: screenWidth / 2, y: screenHeight * 0.85 },
     { x: screenWidth * 0.15, y: screenHeight / 2 },
-  ]
+  ];
 
   for (let i = 0; i < planets.length; i++) {
     const planet = planets[i];

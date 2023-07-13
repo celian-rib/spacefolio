@@ -1,14 +1,14 @@
 const directions = document.querySelectorAll('.direction');
 
-document.addEventListener('mousemove', (e) => {
+document.addEventListener('mousemove', e => {
   for (let i = 0; i < directions.length; i++) {
     const direction = directions[i];
 
     const planetImg = direction.querySelector('img')!;
     const pos = {
-      x: planetImg.getBoundingClientRect().x + (planetImg.width / 2),
-      y: planetImg.getBoundingClientRect().y + (planetImg.height / 2),
-    }
+      x: planetImg.getBoundingClientRect().x + planetImg.width / 2,
+      y: planetImg.getBoundingClientRect().y + planetImg.height / 2,
+    };
 
     const planetRadius = planetImg.width / 4;
 
@@ -18,7 +18,7 @@ document.addEventListener('mousemove', (e) => {
     if (distanceToMouse < planetRadius) {
       text.innerHTML = `click to land`;
     } else {
-      distanceToMouse = Math.max((distanceToMouse * 10) - 500, 0);
+      distanceToMouse = Math.max(distanceToMouse * 10 - 500, 0);
 
       const distText = Math.floor(distanceToMouse);
 

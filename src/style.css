@@ -184,11 +184,3 @@ section {
     opacity: 0;
   }
 }
-
-#dev-info {
-  position: fixed;
-  top: 10px;
-  left: 10px;
-  font-size: 0.9rem;
-  color: white;
-}

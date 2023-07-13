@@ -1,15 +1,15 @@
-import './style.css'
-import './inputs.css'
+import './style.css';
+import './inputs.css';
 import './parallax/parallax.css';
-
-import './interactivity/direction.ts';
-import './interactivity/animatedText.ts';
 
 import Parallax from './parallax/parallax.ts';
 
+import './effects/animatedText.ts';
+import './effects/direction.ts';
+import addStarsToParallax from './effects/stars.ts';
+
 import registerDevMode from './interactivity/devMode.ts';
 import registerPlanetsInteractivity from './interactivity/planets.ts';
-import addStarsToParallax from './interactivity/stars.ts';
 
 const parallax = new Parallax({
   layerCount: 5,

@@ -2,17 +2,17 @@ import './animatedText.css';
 
 const animatedTexts = document.querySelectorAll('.animated-text');
 
-function letterize(element: HTMLElement, animationIndex: { val: number; } = { val: 0 }) {
-  let animations: { child: ChildNode, newLetters: HTMLElement[] }[] = [];
+function letterize(element: HTMLElement, animationIndex: { val: number } = { val: 0 }) {
+  const animations: { child: ChildNode; newLetters: HTMLElement[] }[] = [];
 
-  Array.from(element.childNodes).forEach((child) => {
+  Array.from(element.childNodes).forEach(child => {
     if (child.nodeType === Node.TEXT_NODE) {
       const text = child.textContent;
       if (!text) return;
 
       const letters = text.split('');
 
-      const newLetters = letters.map((letter) => {
+      const newLetters = letters.map(letter => {
         const span = document.createElement('span');
         span.classList.add('letter');
         span.textContent = letter;
@@ -32,8 +32,7 @@ function letterize(element: HTMLElement, animationIndex: { val: number; } = { va
   });
 }
 
-animatedTexts.forEach((animatedText) => {
+animatedTexts.forEach(animatedText => {
   console.log('animatedText', animatedText);
   letterize(animatedText as HTMLElement, { val: 10 });
 });
-
