@@ -1,3 +1,5 @@
+import ComputationModuleLoad from "./computation";
+
 export interface Position {
   x: number;
   y: number;
@@ -84,29 +86,33 @@ export default class Parrallax {
   }
 
   private createLayers() {
-    for (let i = 0; i < this.options.layerCount; i++) {
-      const layer = document.createElement('div');
-      layer.classList.add('parallax-layer');
+    ComputationModuleLoad.then(comp => {
+      for (let i = 0; i < this.options.layerCount; i++) {
+        const layer = document.createElement('div');
+        layer.classList.add('parallax-layer');
 
-      const { width, height } = this.getLayerSize(i);
+        const { width, height } = comp.getLayerSize(i);
 
-      layer.style.width = `${width}px`;
-      layer.style.height = `${height}px`;
+        layer.style.width = `${width}px`;
+        layer.style.height = `${height}px`;
 
-      this.layers.push(layer);
-      this.root.prepend(layer);
-    }
+        this.layers.push(layer);
+        this.root.prepend(layer);
+      }
+    });
   }
 
   private addResizeListener() {
     window.addEventListener('resize', () => {
-      for (let i = 0; i < this.layers.length; i++) {
-        const { width, height } = this.getLayerSize(i);
-        const layer = this.layers[i];
+      ComputationModuleLoad.then(comp => {
+        for (let i = 0; i < this.layers.length; i++) {
+          const { width, height } = comp.getLayerSize(i);
+          const layer = this.layers[i];
 
-        layer.style.width = `${width}px`;
-        layer.style.height = `${height}px`;
-      }
+          layer.style.width = `${width}px`;
+          layer.style.height = `${height}px`;
+        }
+      });
     });
   }
 
@@ -154,84 +160,28 @@ export default class Parrallax {
     }, 0);
   }
 
-  private getLayerPaddingToScreen(layer: number): Size {
-    const halfScreenWidth = window.innerWidth / 2;
-    const halfScreenHeight = window.innerHeight / 2;
-
-    const unitWidth = (this.options.displacementFactor * halfScreenWidth) - halfScreenWidth;
-    const unitHeight = (this.options.displacementFactor * halfScreenHeight) - halfScreenHeight;
-
-    const layerInverse = this.options.layerCount - layer - 1;
-    const layerAddedScale = this.options.layerScaleDifferencePx * layerInverse;
-
-    return {
-      width: unitWidth + layerAddedScale,
-      height: unitHeight + layerAddedScale,
-    }
-  }
-
-  private getLayerSize(layer: number): Size {
-    const layerPaddingToScreen = this.getLayerPaddingToScreen(layer);
-    return {
-      width: window.innerWidth + (2 * layerPaddingToScreen.width),
-      height: window.innerHeight + (2 * layerPaddingToScreen.height),
-    }
-  }
-
-  private getLayerCenteredPosition(layer: number, centMousePos: Position): Position {
-    const screenWidth = window.innerWidth;
-    const screenHeight = window.innerHeight;
-
-    const layerPaddingToScreen = this.getLayerPaddingToScreen(layer);
-
-    if (this.options.inverted) {
-      centMousePos.x = -centMousePos.x;
-      centMousePos.y = -centMousePos.y;
-    }
-
-    const res = {
-      x: (centMousePos.x * layerPaddingToScreen.width) / (screenWidth / 2),
-      y: (centMousePos.y * layerPaddingToScreen.height) / (screenHeight / 2)
-    }
-
-    return res;
-  }
-
-  private getLayerScreenPosition(layer: number, centMousPos: Position): Position {
-    const { x, y } = this.getLayerCenteredPosition(layer, centMousPos);
-    const { width, height } = this.getLayerPaddingToScreen(layer);
-
-    return {
-      x: x - width,
-      y: y - height,
-    }
-  }
-
   private updateLayers(mousePos: Position, animationDuration: number | null = null) {
     const duration = animationDuration ?? this.options.animationDuration;
 
-    for (let i = 0; i < this.layers.length; i++) {
-      const layer = this.layers[i];
+    ComputationModuleLoad.then(comp => {
+      for (let i = 0; i < this.layers.length; i++) {
+        const layer = this.layers[i];
 
-      const centeredMousePos = {
-        x: mousePos.x - (window.innerWidth / 2),
-        y: mousePos.y - (window.innerHeight / 2),
-      };
+        const { x, y } = comp.getLayerScreenPosition(i, mousePos);
 
-      const { x, y } = this.getLayerScreenPosition(i, centeredMousePos);
+        if (animationDuration == 0) {
+          layer.style.transform = `translate(${x}px, ${y}px)`;
+          continue;
+        }
 
-      if (animationDuration == 0) {
-        layer.style.transform = `translate(${x}px, ${y}px)`;
-        continue;
+        layer.animate({
+          transform: `translate(${x}px, ${y}px)`,
+        }, {
+          duration: duration + (100 * i),
+          fill: "forwards"
+        });
       }
-
-      layer.animate({
-        transform: `translate(${x}px, ${y}px)`,
-      }, {
-        duration: duration + (100 * i),
-        fill: "forwards"
-      });
-    }
+    });
   }
 
   public addElementToLayer(element: HTMLElement, layer: number): Parrallax {
