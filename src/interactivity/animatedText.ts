@@ -34,6 +34,6 @@ function letterize(element: HTMLElement, animationIndex: { val: number; } = { va
 
 animatedTexts.forEach((animatedText) => {
   console.log('animatedText', animatedText);
-  letterize(animatedText as HTMLElement, { val: 20 });
+  letterize(animatedText as HTMLElement, { val: 10 });
 });
 

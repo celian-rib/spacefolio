@@ -42,4 +42,4 @@ linkElementsToParallaxLayers(parallax);
 
 setTimeout(() => {
   parallax.startInteraction();
-}, 1000);
+}, 3000);
