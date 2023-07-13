@@ -15,7 +15,8 @@ body {
 }
 
 #background-texture,
-#overlay {
+#overlay,
+#load-overlay {
   position: absolute;
   top: 0;
   left: 0;
@@ -29,6 +30,10 @@ body {
 
 div#overlay {
   background: radial-gradient(circle, rgba(0, 0, 0, 0) 60%, rgba(2, 11, 30, 0.4) 100%);
+}
+
+div#load-overlay {
+  background: radial-gradient(circle, rgba(0, 0, 0, 0) 20%, rgba(0, 0, 0, 1) 80%);
 }
 
 #background-texture::before {
@@ -63,7 +68,7 @@ div#overlay {
   margin: 0;
 }
 
-#title span,
+#title span:not(.letter),
 #title p {
   font-size: 1.5rem;
   text-shadow: 0 2px 0 #58aed9;
@@ -126,24 +131,43 @@ section {
 }
 
 .fade-initial-0 {
-  transition: opacity 1s linear;
   opacity: 0;
 }
 
 .fade-initial-1 {
-  transition: opacity 1s linear;
   opacity: 1;
-  /* pointer-events: none; */
 }
 
 .fade-in {
   opacity: 1;
   pointer-events: inherit !important;
+  animation: fade-in 0.5s ease-in-out forwards;
 }
 
 .fade-out {
   opacity: 0;
   pointer-events: none !important;
+  animation: fade-out 0.5s ease-in-out forwards;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
 }
 
 #dev-info {

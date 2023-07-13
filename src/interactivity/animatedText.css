@@ -1,0 +1,17 @@
+.letter {
+    position: relative;
+    animation: letter-in 0.5s cubic-bezier(.42, 0, .34, 1.3) forwards;
+    opacity: 0;
+}
+
+@keyframes letter-in {
+    0% {
+        opacity: 0;
+        top: 30px;
+    }
+
+    100% {
+        opacity: 1;
+        top: 0;
+    }
+}

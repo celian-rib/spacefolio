@@ -3,6 +3,7 @@ import './inputs.css'
 import './parallax/parallax.css';
 
 import './interactivity/direction.ts';
+import './interactivity/animatedText.ts';
 
 import Parallax from './parallax/parallax.ts';
 
@@ -38,3 +39,7 @@ addStarsToParallax(parallax, 300);
 registerDevMode(parallax);
 registerPlanetsInteractivity(parallax);
 linkElementsToParallaxLayers(parallax);
+
+setTimeout(() => {
+  parallax.startInteraction();
+}, 1000);

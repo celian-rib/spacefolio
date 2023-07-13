@@ -140,18 +140,18 @@ export default class Parrallax {
 
   private init() {
     this.createLayers();
-
     this.addResizeListener();
-
-    if (this.isTouchDevice)
-      this.addTouchListener();
-    else
-      this.addMouseListener();
-
     this.updateLayers({
       x: window.innerWidth / 2,
       y: window.innerHeight / 2,
     }, 0);
+  }
+  
+  public startInteraction() {
+    if (this.isTouchDevice)
+      this.addTouchListener();
+    else
+      this.addMouseListener();
   }
 
   private getLayerPaddingToScreen(layer: number): Size {
