@@ -33,7 +33,7 @@ div#overlay {
 }
 
 div#load-overlay {
-  background: radial-gradient(circle, rgba(0, 0, 0, 0) 25%, rgba(255, 255, 255, 1) 25%);
+  background: radial-gradient(circle, rgba(0, 0, 0, 0) var(--close-width-percent, 25%), rgba(255, 255, 255, 1) var(--close-width-percent, 25%));
   animation: load-overlay-out 3s ease-in-out forwards;
   animation-delay: 1.5s;
   z-index: 100;

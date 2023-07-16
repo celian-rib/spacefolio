@@ -6,6 +6,7 @@ import Parallax from './parallax/parallax.ts';
 
 import './effects/animatedText.ts';
 import './effects/planetsDistances.ts';
+import './effects/loadOverlay.ts';
 
 import addStarsToParallax from './effects/stars.ts';
 

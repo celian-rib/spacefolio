@@ -6,13 +6,10 @@ function createStarElt(layerRoot: SVGElement, layerDepth: number, layerCount: nu
     y: Math.floor(Math.random() * 100),
   };
 
-  const svgns = 'http://www.w3.org/2000/svg';
-
   const size = 1 - layerDepth / (layerCount + 1);
-
-  const star = document.createElementNS(svgns, 'rect');
-  star.setAttribute('x', `${pos.x}`);
-  star.setAttribute('y', `${pos.y}`);
+  const star = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+  star.setAttribute('x', `${pos.x}%`);
+  star.setAttribute('y', `${pos.y}%`);
   star.setAttribute('width', `${size / 2}px`);
   star.setAttribute('height', `${size / 2}px`);
   star.setAttribute('fill', 'white');
@@ -22,12 +19,12 @@ function createStarElt(layerRoot: SVGElement, layerDepth: number, layerCount: nu
 }
 
 function createLayerStars(layer: HTMLElement, starCount: number, layerDepth: number, layerCount: number) {
-  const svgns = 'http://www.w3.org/2000/svg';
-  const svg = document.createElementNS(svgns, 'svg');
-  svg.setAttribute('viewBox', `0 0 100 100`);
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  const windowAspectRatio = window.innerWidth / window.innerHeight;
+
+  svg.setAttribute('viewBox', `0 0 ${windowAspectRatio * 100} 100`);
   svg.setAttribute('width', '100%');
   svg.setAttribute('height', '100%');
-
   const opacity = 1 - layerDepth / (layerCount + 1);
   svg.style.opacity = `${opacity}`;
 
