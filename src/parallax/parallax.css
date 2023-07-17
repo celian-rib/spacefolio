@@ -11,6 +11,9 @@
     width: 100vw;
     height: 100vh;
     pointer-events: none;
+
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
 }
 
 .dev-mode {

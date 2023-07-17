@@ -25,10 +25,13 @@ function linkElementsToParallaxLayers(parallax: Parallax) {
   parallax.addIdToLayer('background-texture', 4);
 
   parallax.addIdToLayer('title', 0);
-  parallax.addIdToLayer('dir-1', 1);
-  parallax.addIdToLayer('dir-2', 1);
-  parallax.addIdToLayer('dir-3', 1);
-  parallax.addIdToLayer('dir-4', 1);
+
+  parallax.addIdToLayer('debug', 1);
+
+  parallax.addIdToLayer('planet-1', 1);
+  parallax.addIdToLayer('planet-2', 1);
+  parallax.addIdToLayer('planet-3', 1);
+  parallax.addIdToLayer('planet-4', 1);
 
   parallax.addIdToLayer('bg-gaz-planet', 3);
   parallax.addIdToLayer('bg-black-hole', 3);

@@ -41,14 +41,19 @@ export interface ParallaxOptions {
 
    * @default false
    */
-  inverted?: boolean;
+  inverted: boolean;
+  /**
+   * How much the different layers should be offset from the origin
+   * after changing the default origin
+   * (Last layer will always be unchanged to preserve background)
+   *
+   * @defaul
+   */
+  originOffsetDepthDampingFactor: number;
 }
 
-interface OptionalParallaxOptions extends Omit<ParallaxOptions, 'displacementFactor' | 'animationDuration' | 'layerScaleDifferencePx' | 'inverted'> {
-  displacementFactor?: number;
-  layerScaleDifferencePx?: number;
-  animationDuration?: number;
-  inverted?: boolean;
+interface OptionalParallaxOptions extends Partial<ParallaxOptions> {
+  layerCount: number;
 }
 
 export default class Parrallax {
@@ -56,8 +61,12 @@ export default class Parrallax {
   private layers: HTMLElement[] = [];
   private root: HTMLElement;
 
-  private lockedPosition?: Position;
+  private mousePos: Position;
+
   private isTouchDevice: boolean;
+
+  private origin: Position = { x: 0, y: 0 };
+  private zoom: number = 1;
 
   constructor(options: OptionalParallaxOptions) {
     const root = document.getElementById('parallax-root');
@@ -71,6 +80,12 @@ export default class Parrallax {
       layerScaleDifferencePx: options.layerScaleDifferencePx ?? 300,
       animationDuration: options.animationDuration ?? 2000,
       inverted: options.inverted ?? false,
+      originOffsetDepthDampingFactor: options.originOffsetDepthDampingFactor ?? 0.1,
+    };
+
+    this.mousePos = {
+      x: window.innerWidth / 2,
+      y: window.innerHeight / 2,
     };
 
     this.isTouchDevice = 'ontouchstart' in window;
@@ -112,12 +127,12 @@ export default class Parrallax {
   private addMouseListener() {
     console.log('Parallax started with mouse');
     document.addEventListener('mousemove', e => {
-      const mousePos = {
+      this.mousePos = {
         x: e.clientX,
         y: e.clientY,
       };
 
-      if (!this.lockedPosition) this.updateLayers(mousePos);
+      this.updateLayers();
     });
   }
 
@@ -126,25 +141,19 @@ export default class Parrallax {
     document.addEventListener('touchmove', e => {
       const touch = e.touches[0];
 
-      const mousePos = {
+      this.mousePos = {
         x: touch.clientX,
         y: touch.clientY,
       };
 
-      if (!this.lockedPosition) this.updateLayers(mousePos);
+      this.updateLayers();
     });
   }
 
   private init() {
     this.createLayers();
     this.addResizeListener();
-    this.updateLayers(
-      {
-        x: window.innerWidth / 2,
-        y: window.innerHeight / 2,
-      },
-      0,
-    );
+    this.updateLayers(0);
   }
 
   public startInteraction() {
@@ -205,31 +214,36 @@ export default class Parrallax {
     };
   }
 
-  private updateLayers(mousePos: Position, animationDuration: number | null = null) {
+  private updateLayers(animationDuration: number | null = null) {
     const duration = animationDuration ?? this.options.animationDuration;
 
     for (let i = 0; i < this.layers.length; i++) {
       const layer = this.layers[i];
 
       const centeredMousePos = {
-        x: mousePos.x - window.innerWidth / 2,
-        y: mousePos.y - window.innerHeight / 2,
+        x: this.mousePos.x - window.innerWidth / 2,
+        y: this.mousePos.y - window.innerHeight / 2,
       };
 
       const { x, y } = this.getLayerScreenPosition(i, centeredMousePos);
 
+      const offsetAccent = (this.layers.length - i - 1) * this.options.originOffsetDepthDampingFactor;
+      const offsetX = this.origin.x * offsetAccent + x;
+      const offsetY = this.origin.y * offsetAccent + y;
+
       if (animationDuration == 0) {
-        layer.style.transform = `translate(${x}px, ${y}px)`;
+        layer.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(${this.zoom})`;
         continue;
       }
 
       layer.animate(
         {
-          transform: `translate(${x}px, ${y}px)`,
+          transform: `translate(${offsetX}px, ${offsetY}px) scale(${this.zoom})`,
         },
         {
           duration: duration + 100 * i,
           fill: 'forwards',
+          easing: animationDuration ? 'ease-out' : 'linear',
         },
       );
     }
@@ -256,17 +270,32 @@ export default class Parrallax {
     return this;
   }
 
-  public getRoot(): HTMLElement {
-    return this.root;
+  public setDevMode(active: boolean): void {
+    if (active) {
+      this.root.classList.add('dev-mode');
+    } else {
+      this.root.classList.remove('dev-mode');
+    }
   }
 
-  public lockPosition(pos: Position, animationDuration: number = 1000) {
-    this.lockedPosition = pos;
-    this.updateLayers(pos, animationDuration);
+  public setOrigin(origin: Position) {
+    this.origin = origin;
+    this.updateLayers(400);
+
+    for (let i = 0; i < this.layers.length; i++) {
+      // const layer = this.layers[i];
+      // layer.style.transformOrigin = `${origin.x}px ${origin.y}px`;
+    }
   }
 
-  public unlockPosition() {
-    this.lockedPosition = undefined;
+  public setZoom(zoom: number) {
+    this.zoom = zoom;
+
+    this.origin = {
+      x: this.origin.x * zoom,
+      y: this.origin.y * zoom,
+    };
+    this.updateLayers(400);
   }
 
   public isTouchDeviceMode() {

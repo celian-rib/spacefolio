@@ -1,4 +1,4 @@
-const directions = document.querySelectorAll('.direction');
+const directions = document.querySelectorAll('.planet');
 
 document.addEventListener('mousemove', e => {
   for (let i = 0; i < directions.length; i++) {
