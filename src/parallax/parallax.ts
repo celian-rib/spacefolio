@@ -31,11 +31,14 @@ export interface ParallaxOptions {
    */
   layerScaleDifferencePx: number;
   /**
-   * How long the animation should last
+   * Affect the speed of the animation.
+   * The higher the factor, the faster the animation.
    *
-   * @default 2000
+   * The interplation factor is between 0 and 1.
+   *
+   * @default 0.1
    */
-  animationDuration: number;
+  animationInterpolationFactor: number;
   /**
    * If the animation should be inverted (The layers will move in the opposite direction)
 
@@ -56,9 +59,20 @@ interface OptionalParallaxOptions extends Partial<ParallaxOptions> {
   layerCount: number;
 }
 
+interface Layer {
+  element: HTMLElement;
+  size: Size;
+
+  position: Position;
+  targetPosition: Position;
+
+  scale: number;
+  targetScale: number;
+}
+
 export default class Parrallax {
   private options: ParallaxOptions;
-  private layers: HTMLElement[] = [];
+  private layers: Layer[] = [];
   private root: HTMLElement;
 
   private mousePos: Position;
@@ -78,7 +92,7 @@ export default class Parrallax {
       ...options,
       displacementFactor: options.displacementFactor ?? 2,
       layerScaleDifferencePx: options.layerScaleDifferencePx ?? 300,
-      animationDuration: options.animationDuration ?? 2000,
+      animationInterpolationFactor: options.animationInterpolationFactor ?? 0.1,
       inverted: options.inverted ?? false,
       originOffsetDepthDampingFactor: options.originOffsetDepthDampingFactor ?? 0.1,
     };
@@ -102,12 +116,21 @@ export default class Parrallax {
       const layer = document.createElement('div');
       layer.classList.add('parallax-layer');
 
-      const { width, height } = this.getLayerSize(i);
+      const size = this.getLayerSize(i);
+      const { width, height } = size;
 
       layer.style.width = `${width}px`;
       layer.style.height = `${height}px`;
+      layer.style.willChange = 'transform';
 
-      this.layers.push(layer);
+      this.layers.push({
+        element: layer,
+        size,
+        position: { x: 0, y: 0 },
+        targetPosition: { x: 0, y: 0 },
+        scale: 1,
+        targetScale: 1,
+      });
       this.root.prepend(layer);
     }
   }
@@ -115,11 +138,14 @@ export default class Parrallax {
   private addResizeListener() {
     window.addEventListener('resize', () => {
       for (let i = 0; i < this.layers.length; i++) {
-        const { width, height } = this.getLayerSize(i);
+        const size = this.getLayerSize(i);
+        const { width, height } = size;
+
         const layer = this.layers[i];
 
-        layer.style.width = `${width}px`;
-        layer.style.height = `${height}px`;
+        layer.element.style.width = `${width}px`;
+        layer.element.style.height = `${height}px`;
+        layer.size = size;
       }
     });
   }
@@ -146,19 +172,24 @@ export default class Parrallax {
         y: touch.clientY,
       };
 
-      this.updateLayers();
+      requestAnimationFrame(() => this.updateLayers());
     });
   }
 
   private init() {
     this.createLayers();
     this.addResizeListener();
-    this.updateLayers(0);
+    this.updateLayers();
+    for (let i = 0; i < this.layers.length; i++) {
+      const layer = this.layers[i];
+      this.moveLayerToPosition(layer, layer.targetPosition, layer.targetScale);
+    }
   }
 
   public startInteraction() {
     if (this.isTouchDevice) this.addTouchListener();
     else this.addMouseListener();
+    this.animationLoop();
   }
 
   private getLayerPaddingToScreen(layer: number): Size {
@@ -214,9 +245,34 @@ export default class Parrallax {
     };
   }
 
-  private updateLayers(animationDuration: number | null = null) {
-    const duration = animationDuration ?? this.options.animationDuration;
+  private moveLayerToPosition(layer: Layer, position: Position, scale: number) {
+    layer.element.style.transform = `translate3d(${position.x}px, ${position.y}px, 0) scale(${scale})`;
+    layer.position = position;
+    layer.scale = scale;
+  }
 
+  private animationLoop() {
+    const lerp = (start: number, end: number, t: number) => start * (1 - t) + end * t;
+    const lerpPosition = (start: Position, end: Position, t: number) => ({
+      x: lerp(start.x, end.x, t),
+      y: lerp(start.y, end.y, t),
+    });
+
+    const animate = () => {
+      for (let i = 0; i < this.layers.length; i++) {
+        const layer = this.layers[i];
+        const newPosition = lerpPosition(layer.position, layer.targetPosition, this.options.animationInterpolationFactor);
+        const newScale = lerp(layer.scale, layer.targetScale, this.options.animationInterpolationFactor);
+        this.moveLayerToPosition(layer, newPosition, newScale);
+      }
+
+      requestAnimationFrame(animate);
+    };
+
+    requestAnimationFrame(animate);
+  }
+
+  private updateLayers() {
     for (let i = 0; i < this.layers.length; i++) {
       const layer = this.layers[i];
 
@@ -228,24 +284,9 @@ export default class Parrallax {
       const { x, y } = this.getLayerScreenPosition(i, centeredMousePos);
 
       const offsetAccent = (this.layers.length - i - 1) * this.options.originOffsetDepthDampingFactor;
-      const offsetX = this.origin.x * offsetAccent + x;
-      const offsetY = this.origin.y * offsetAccent + y;
-
-      if (animationDuration == 0) {
-        layer.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(${this.zoom})`;
-        continue;
-      }
-
-      layer.animate(
-        {
-          transform: `translate(${offsetX}px, ${offsetY}px) scale(${this.zoom})`,
-        },
-        {
-          duration: duration + 100 * i,
-          fill: 'forwards',
-          easing: animationDuration ? 'ease-out' : 'linear',
-        },
-      );
+      layer.targetPosition.x = this.origin.x * offsetAccent + x;
+      layer.targetPosition.y = this.origin.y * offsetAccent + y;
+      layer.targetScale = this.zoom;
     }
   }
 
@@ -253,7 +294,7 @@ export default class Parrallax {
     if (layer < 0 || layer > this.options.layerCount) throw new Error(`Layer must be between 0 and ${this.options.layerCount}`);
 
     const layerRoot = this.layers[layer];
-    layerRoot.appendChild(element);
+    layerRoot.element.appendChild(element);
 
     return this;
   }
@@ -265,7 +306,7 @@ export default class Parrallax {
     if (!elt) throw new Error(`Could not find element with id ${id}`);
 
     const layerRoot = this.layers[layer];
-    layerRoot.appendChild(elt);
+    layerRoot.element.appendChild(elt);
 
     return this;
   }
@@ -280,12 +321,7 @@ export default class Parrallax {
 
   public setOrigin(origin: Position) {
     this.origin = origin;
-    this.updateLayers(400);
-
-    for (let i = 0; i < this.layers.length; i++) {
-      // const layer = this.layers[i];
-      // layer.style.transformOrigin = `${origin.x}px ${origin.y}px`;
-    }
+    this.updateLayers();
   }
 
   public setZoom(zoom: number) {
@@ -295,7 +331,7 @@ export default class Parrallax {
       x: this.origin.x * zoom,
       y: this.origin.y * zoom,
     };
-    this.updateLayers(400);
+    this.updateLayers();
   }
 
   public isTouchDeviceMode() {

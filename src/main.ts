@@ -15,7 +15,7 @@ const parallax = new Parallax({
   layerCount: 5,
   displacementFactor: 1.4,
   layerScaleDifferencePx: 110,
-  animationDuration: 3000,
+  animationInterpolationFactor: 0.1,
   inverted: true,
 });
 

@@ -10,7 +10,7 @@ function letterize(element: HTMLElement, animationIndex: { val: number } = { val
       const text = child.textContent;
       if (!text) return;
 
-      const letters = text.split('');
+      const letters = Array.from(text);
 
       const newLetters = letters.map(letter => {
         const span = document.createElement('span');

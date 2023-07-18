@@ -37,6 +37,6 @@ export default function addStarsToParallax(parralax: Parrallax, starCount: numbe
   const starsPerLayer = Math.floor(starCount / (parralax.getLayers().length - 1));
   for (let i = 2; i < parralax.getLayers().length; i++) {
     const layer = parralax.getLayers()[i];
-    createLayerStars(layer, starsPerLayer, i, parralax.getLayers().length);
+    createLayerStars(layer.element, starsPerLayer, i, parralax.getLayers().length);
   }
 }
