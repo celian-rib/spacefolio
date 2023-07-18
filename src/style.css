@@ -117,19 +117,6 @@ footer {
   opacity: 0.7;
 }
 
-footer div {
-  display: flex;
-  align-items: center;
-}
-
-footer div p {
-  margin: 0;
-}
-
-footer div p {
-  margin-left: 10px;
-}
-
 section {
   position: fixed;
   top: 0;
@@ -183,15 +170,4 @@ section {
   100% {
     opacity: 0;
   }
-}
-
-#debug {
-  height: 10px;
-  width: 10px;
-
-  background-color: red;
-  position: absolute;
-  top: 30%;
-  left: 50%;
-  transform: translate(-50%, -50%);
 }

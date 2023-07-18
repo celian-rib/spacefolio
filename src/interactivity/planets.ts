@@ -10,12 +10,12 @@ import Parrallax from '../parallax/parallax';
 export default function registerPlanetsInteractivity(parallax: Parrallax) {
   const planets = document.querySelectorAll('.planet');
 
-  const horixontalDistance = 2000;
-  const verticalDistance = 1900;
+  const horixontalDistance = 2200;
+  const verticalDistance = 1300;
   const planetsLockPositions = [
-    { x: 0, y: verticalDistance },
+    { x: -400, y: verticalDistance },
     { x: -horixontalDistance, y: 0 },
-    { x: 0, y: -verticalDistance },
+    { x: 400, y: -verticalDistance },
     { x: horixontalDistance, y: 0 },
   ];
 

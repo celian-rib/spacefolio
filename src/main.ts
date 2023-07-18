@@ -1,5 +1,4 @@
 import './style.css';
-import './inputs.css';
 import './parallax/parallax.css';
 
 import Parallax from './parallax/parallax.ts';
@@ -10,7 +9,6 @@ import './effects/loadOverlay.ts';
 
 import addStarsToParallax from './effects/stars.ts';
 
-import registerDevMode from './interactivity/devMode.ts';
 import registerPlanetsInteractivity from './interactivity/planets.ts';
 
 const parallax = new Parallax({
@@ -26,8 +24,6 @@ function linkElementsToParallaxLayers(parallax: Parallax) {
 
   parallax.addIdToLayer('title', 0);
 
-  parallax.addIdToLayer('debug', 1);
-
   parallax.addIdToLayer('planet-1', 1);
   parallax.addIdToLayer('planet-2', 1);
   parallax.addIdToLayer('planet-3', 1);
@@ -41,7 +37,6 @@ function linkElementsToParallaxLayers(parallax: Parallax) {
 }
 
 addStarsToParallax(parallax, 300);
-registerDevMode(parallax);
 registerPlanetsInteractivity(parallax);
 linkElementsToParallaxLayers(parallax);
 
