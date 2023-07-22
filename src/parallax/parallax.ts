@@ -31,6 +31,12 @@ export interface ParallaxOptions {
    */
   layerScaleDifferencePx: number;
   /**
+   * Speed of the parallax animation on touch devices
+   *
+   * @default 20
+   */
+  touchDeviceSensitivity: number;
+  /**
    * Affect the speed of the animation.
    * The higher the factor, the faster the animation.
    *
@@ -103,6 +109,7 @@ export default class Parrallax {
       inverted: options.inverted ?? false,
       originOffsetDepthDampingFactor: options.originOffsetDepthDampingFactor ?? 0.1,
       linkedElements: options.linkedElements ?? {},
+      touchDeviceSensitivity: options.touchDeviceSensitivity ?? 20,
     };
 
     this.mousePos = {
@@ -172,15 +179,45 @@ export default class Parrallax {
 
   private addTouchListener() {
     console.log('Parallax started for touch devices');
+
+    let lastTouch = {
+      x: 0,
+      y: 0,
+    };
+
     document.addEventListener('touchmove', e => {
       const touch = e.touches[0];
-
-      this.mousePos = {
+      const touchPos = {
         x: touch.clientX,
         y: touch.clientY,
       };
 
-      requestAnimationFrame(() => this.updateLayers());
+      const touchDirection = {
+        x: touchPos.x - lastTouch.x,
+        y: touchPos.y - lastTouch.y,
+      };
+
+      const touchDirectionMagnitude = Math.sqrt(touchDirection.x ** 2 + touchDirection.y ** 2);
+      const normalizedTouchDirection = {
+        x: touchDirection.x / touchDirectionMagnitude,
+        y: touchDirection.y / touchDirectionMagnitude,
+      };
+
+      console.log(normalizedTouchDirection);
+
+      const sensitivity = this.options.touchDeviceSensitivity / window.devicePixelRatio;
+
+      this.mousePos = {
+        x: this.mousePos.x - normalizedTouchDirection.x * sensitivity,
+        y: this.mousePos.y - normalizedTouchDirection.y * sensitivity,
+      };
+
+      this.mousePos.x = Math.max(0, Math.min(this.mousePos.x, window.innerWidth));
+      this.mousePos.y = Math.max(0, Math.min(this.mousePos.y, window.innerHeight));
+
+      this.updateLayers();
+      // Here we create a new object for the last touch instead of mutating it.
+      lastTouch = { ...touchPos };
     });
   }
 
