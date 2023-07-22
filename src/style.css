@@ -95,7 +95,7 @@ div#load-overlay {
   margin: 10px;
 }
 
-#title:hover p {
+#title:hover p:not(.inactive) {
   opacity: 1;
 }
 

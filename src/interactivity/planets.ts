@@ -29,7 +29,7 @@ export default function registerPlanetsInteractivity(parallax: Parrallax) {
         return;
       }
       parallax.setOrigin(planetsLockPositions[i]);
-      parallax.setZoom(3.5);
+      parallax.setZoom(3);
       planet.classList.add('active-planet');
     });
   }

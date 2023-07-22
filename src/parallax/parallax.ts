@@ -53,6 +53,13 @@ export interface ParallaxOptions {
    * @defaul
    */
   originOffsetDepthDampingFactor: number;
+  /**
+   * Elements that should be linked to a specific layer
+   * The key is the id of the element, and the value is the layer number
+   */
+  linkedElements: {
+    [key: string]: number;
+  };
 }
 
 interface OptionalParallaxOptions extends Partial<ParallaxOptions> {
@@ -95,6 +102,7 @@ export default class Parrallax {
       animationInterpolationFactor: options.animationInterpolationFactor ?? 0.1,
       inverted: options.inverted ?? false,
       originOffsetDepthDampingFactor: options.originOffsetDepthDampingFactor ?? 0.1,
+      linkedElements: options.linkedElements ?? {},
     };
 
     this.mousePos = {
@@ -176,20 +184,31 @@ export default class Parrallax {
     });
   }
 
+  private linkInitialElements() {
+    const linkedElements = this.options.linkedElements;
+    for (const key in linkedElements) {
+      const layer = linkedElements[key];
+      this.addIdToLayer(key, layer);
+    }
+  }
+
   private init() {
     this.createLayers();
     this.addResizeListener();
     this.updateLayers();
+    this.linkInitialElements();
+
     for (let i = 0; i < this.layers.length; i++) {
       const layer = this.layers[i];
       this.moveLayerToPosition(layer, layer.targetPosition, layer.targetScale);
     }
+
+    this.animationLoop();
   }
 
   public startInteraction() {
     if (this.isTouchDevice) this.addTouchListener();
     else this.addMouseListener();
-    this.animationLoop();
   }
 
   private getLayerPaddingToScreen(layer: number): Size {
