@@ -157,3 +157,29 @@
 .active-planet p {
   opacity: 0;
 }
+
+#go-back-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  pointer-events: all !important;
+  backface-visibility: hidden;
+
+  color: white;
+  border: solid white 4px; 
+
+  padding: 5px 10px;
+}
+
+#go-back-button > p {
+  font-size: 2.5rem;
+  margin: 0;
+  padding: 0;
+}
+
+#go-back-button:hover {
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.17);
+}

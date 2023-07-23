@@ -1,48 +1,64 @@
+import Parallax from '../parallax/parallax';
+
 import './planets.css';
 
-import Parrallax from '../parallax/parallax';
+export default function registerPlanetsInteractivity(parallax: Parallax) {
+  const goBackButton = document.getElementById('go-back-button')!;
+  const planets = document.getElementsByClassName('planet');
 
-// const LOCK_ANIMATION_DURATION = 100;
+  const horixontalDistance = 2000;
+  const verticalDistance = 1000;
 
-// const footer = document.querySelector('footer')!;
-// const section = document.querySelector('section')!;
-
-export default function registerPlanetsInteractivity(parallax: Parrallax) {
-  const planets = document.querySelectorAll('.planet');
-
-  const horixontalDistance = 2200;
-  const verticalDistance = 1300;
+  // const planetsLockPositions = [
+  //   { x: -400, y: verticalDistance },
+  //   { x: -horixontalDistance, y: 0 },
+  //   { x: 400, y: -verticalDistance },
+  //   { x: horixontalDistance, y: 0 },
+  // ];
   const planetsLockPositions = [
-    { x: -400, y: verticalDistance },
+    { x: 0, y: verticalDistance },
     { x: -horixontalDistance, y: 0 },
-    { x: 400, y: -verticalDistance },
+    { x: 0, y: -verticalDistance },
     { x: horixontalDistance, y: 0 },
   ];
 
   for (let i = 0; i < planets.length; i++) {
     const planet = planets[i];
-    planet.addEventListener('click', () => {
-      if (planet.classList.contains('active-planet')) {
-        parallax.setOrigin({ x: 0, y: 0 });
-        parallax.setZoom(1);
-        planet.classList.remove('active-planet');
-        return;
-      }
+
+    const focusPlanet = () => {
       parallax.setOrigin(planetsLockPositions[i]);
       parallax.setZoom(3);
+
+      goBackButton.classList.add('fade-in');
+      goBackButton.classList.remove('fade-out');
+
+      const layerElt = parallax.createTemporyLayer();
+      layerElt.appendChild(goBackButton);
+      layerElt.style.outline = 'solid 1px red';
+
       planet.classList.add('active-planet');
+    };
+
+    const unfocusPlanet = () => {
+      parallax.setOrigin({ x: 0, y: 0 });
+      parallax.setZoom(1);
+
+      goBackButton.classList.remove('fade-in');
+      goBackButton.classList.add('fade-out');
+
+      goBackButton.removeEventListener('click', unfocusPlanet);
+
+      parallax.deleteAllTemporaryLayers();
+
+      setTimeout(() => {
+        planet.classList.remove('active-planet');
+      }, 1000);
+    };
+
+    planet.addEventListener('click', () => {
+      if (planet.classList.contains('active-planet')) return;
+      focusPlanet();
+      goBackButton.addEventListener('click', unfocusPlanet);
     });
   }
-
-  const sectionBtn = document.querySelector('section button')!;
-  sectionBtn.addEventListener('click', () => {
-    // parallax.unlockPosition();
-    // section.classList.remove('fade-in');
-    // footer.classList.remove('fade-out');
-    // parallaxTopLayer.classList.remove('fade-out');
-    // for (let i = 0; i < planets.length; i++) {
-    //   const planet = planets[i];
-    //   planet.classList.remove('active-planet');
-    // }
-  });
 }

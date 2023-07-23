@@ -85,7 +85,9 @@ interface Layer {
 
 export default class Parrallax {
   private options: ParallaxOptions;
-  private layers: Layer[] = [];
+  private staticLayers: Layer[] = [];
+  private temporaryLayers: Layer[] = [];
+
   private root: HTMLElement;
 
   private mousePos: Position;
@@ -123,45 +125,55 @@ export default class Parrallax {
   }
 
   public getLayers() {
-    return this.layers;
+    return [...this.staticLayers, ...this.temporaryLayers];
+  }
+
+  private createLayer(depth: number, prepend: boolean = true) {
+    const layerElt = document.createElement('div');
+    layerElt.classList.add('parallax-layer');
+
+    const size = this.getLayerSize(depth);
+    const { width, height } = size;
+
+    layerElt.style.width = `${width}px`;
+    layerElt.style.height = `${height}px`;
+    layerElt.style.willChange = 'transform';
+    layerElt.style.setProperty('--layer-depth', `${depth}`);
+
+    const layer = {
+      element: layerElt,
+      size,
+      position: { x: 0, y: 0 },
+      targetPosition: { x: 0, y: 0 },
+      scale: 1,
+      targetScale: 1,
+    };
+
+    if (prepend) this.root.prepend(layerElt);
+    else this.root.appendChild(layerElt);
+    return layer;
   }
 
   private createLayers() {
     for (let i = 0; i < this.options.layerCount; i++) {
-      const layer = document.createElement('div');
-      layer.classList.add('parallax-layer');
-
-      const size = this.getLayerSize(i);
-      const { width, height } = size;
-
-      layer.style.width = `${width}px`;
-      layer.style.height = `${height}px`;
-      layer.style.willChange = 'transform';
-
-      this.layers.push({
-        element: layer,
-        size,
-        position: { x: 0, y: 0 },
-        targetPosition: { x: 0, y: 0 },
-        scale: 1,
-        targetScale: 1,
-      });
-      this.root.prepend(layer);
+      const layer = this.createLayer(i);
+      this.staticLayers.push(layer);
     }
   }
 
   private addResizeListener() {
     window.addEventListener('resize', () => {
-      for (let i = 0; i < this.layers.length; i++) {
-        const size = this.getLayerSize(i);
+      const resizeLayer = (layer: Layer, depth: number) => {
+        const size = this.getLayerSize(depth);
         const { width, height } = size;
-
-        const layer = this.layers[i];
 
         layer.element.style.width = `${width}px`;
         layer.element.style.height = `${height}px`;
         layer.size = size;
-      }
+      };
+
+      for (let i = 0; i < this.staticLayers.length; i++) resizeLayer(this.staticLayers[i], i);
+      for (let i = 0; i < this.temporaryLayers.length; i++) resizeLayer(this.temporaryLayers[i], i);
     });
   }
 
@@ -216,7 +228,6 @@ export default class Parrallax {
       this.mousePos.y = Math.max(0, Math.min(this.mousePos.y, window.innerHeight));
 
       this.updateLayers();
-      // Here we create a new object for the last touch instead of mutating it.
       lastTouch = { ...touchPos };
     });
   }
@@ -235,8 +246,8 @@ export default class Parrallax {
     this.updateLayers();
     this.linkInitialElements();
 
-    for (let i = 0; i < this.layers.length; i++) {
-      const layer = this.layers[i];
+    for (let i = 0; i < this.staticLayers.length; i++) {
+      const layer = this.staticLayers[i];
       this.moveLayerToPosition(layer, layer.targetPosition, layer.targetScale);
     }
 
@@ -315,8 +326,9 @@ export default class Parrallax {
     });
 
     const animate = () => {
-      for (let i = 0; i < this.layers.length; i++) {
-        const layer = this.layers[i];
+      const layers = this.getLayers();
+      for (let i = 0; i < layers.length; i++) {
+        const layer = layers[i];
         const newPosition = lerpPosition(layer.position, layer.targetPosition, this.options.animationInterpolationFactor);
         const newScale = lerp(layer.scale, layer.targetScale, this.options.animationInterpolationFactor);
         this.moveLayerToPosition(layer, newPosition, newScale);
@@ -329,27 +341,40 @@ export default class Parrallax {
   }
 
   private updateLayers() {
-    for (let i = 0; i < this.layers.length; i++) {
-      const layer = this.layers[i];
-
+    for (let i = 0; i < this.staticLayers.length; i++) {
       const centeredMousePos = {
         x: this.mousePos.x - window.innerWidth / 2,
         y: this.mousePos.y - window.innerHeight / 2,
       };
 
+      const layer = this.staticLayers[i];
       const { x, y } = this.getLayerScreenPosition(i, centeredMousePos);
 
-      const offsetAccent = (this.layers.length - i - 1) * this.options.originOffsetDepthDampingFactor;
+      const offsetAccent = (this.staticLayers.length - i - 1) * this.options.originOffsetDepthDampingFactor;
       layer.targetPosition.x = this.origin.x * offsetAccent + x;
       layer.targetPosition.y = this.origin.y * offsetAccent + y;
       layer.targetScale = this.zoom;
+    }
+
+    for (let i = 0; i < this.temporaryLayers.length; i++) {
+      const centeredMousePos = {
+        x: this.mousePos.x - window.innerWidth / 2,
+        y: this.mousePos.y - window.innerHeight / 2,
+      };
+      const layer = this.temporaryLayers[i];
+      const { x, y } = this.getLayerScreenPosition(i, centeredMousePos);
+
+      const offsetAccent = (this.staticLayers.length - i - 1) * this.options.originOffsetDepthDampingFactor;
+      layer.targetPosition.x = offsetAccent + x;
+      layer.targetPosition.y = offsetAccent + y;
+      layer.targetScale = 1;
     }
   }
 
   public addElementToLayer(element: HTMLElement, layer: number): Parrallax {
     if (layer < 0 || layer > this.options.layerCount) throw new Error(`Layer must be between 0 and ${this.options.layerCount}`);
 
-    const layerRoot = this.layers[layer];
+    const layerRoot = this.staticLayers[layer];
     layerRoot.element.appendChild(element);
 
     return this;
@@ -361,10 +386,26 @@ export default class Parrallax {
     const elt = document.getElementById(id);
     if (!elt) throw new Error(`Could not find element with id ${id}`);
 
-    const layerRoot = this.layers[layer];
+    const layerRoot = this.staticLayers[layer];
     layerRoot.element.appendChild(elt);
 
     return this;
+  }
+
+  public createTemporyLayer(): HTMLElement {
+    const layer = this.createLayer(0, false);
+    this.temporaryLayers.push(layer);
+    this.updateLayers();
+    return layer.element;
+  }
+
+  public deleteAllTemporaryLayers() {
+    for (let i = 0; i < this.temporaryLayers.length; i++) {
+      const layer = this.temporaryLayers[i];
+      layer.element.remove();
+    }
+
+    this.temporaryLayers = [];
   }
 
   public setDevMode(active: boolean): void {
