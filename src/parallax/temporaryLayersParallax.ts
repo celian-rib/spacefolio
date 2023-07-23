@@ -40,8 +40,8 @@ export default class TemporaryLayersParallax extends Parrallax {
     }
   }
 
-  public createTemporyLayer(): HTMLElement {
-    const layer = this.createLayer(0, false);
+  public createTemporyLayer(depth: number = 0): HTMLElement {
+    const layer = this.createLayer(depth, false);
     this.temporaryLayers.push(layer);
     this.updateLayers();
     return layer.element;
