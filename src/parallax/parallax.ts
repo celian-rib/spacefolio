@@ -68,11 +68,11 @@ export interface ParallaxOptions {
   };
 }
 
-interface OptionalParallaxOptions extends Partial<ParallaxOptions> {
+export interface OptionalParallaxOptions extends Partial<ParallaxOptions> {
   layerCount: number;
 }
 
-interface Layer {
+export interface Layer {
   element: HTMLElement;
   size: Size;
 
@@ -84,18 +84,17 @@ interface Layer {
 }
 
 export default class Parrallax {
-  private options: ParallaxOptions;
-  private staticLayers: Layer[] = [];
-  private temporaryLayers: Layer[] = [];
+  protected options: ParallaxOptions;
+  protected layers: Layer[] = [];
 
-  private root: HTMLElement;
+  protected root: HTMLElement;
 
-  private mousePos: Position;
+  protected mousePos: Position;
 
-  private isTouchDevice: boolean;
+  protected isTouchDevice: boolean;
 
-  private origin: Position = { x: 0, y: 0 };
-  private zoom: number = 1;
+  protected origin: Position = { x: 0, y: 0 };
+  protected zoom: number = 1;
 
   constructor(options: OptionalParallaxOptions) {
     const root = document.getElementById('parallax-root');
@@ -125,10 +124,10 @@ export default class Parrallax {
   }
 
   public getLayers() {
-    return [...this.staticLayers, ...this.temporaryLayers];
+    return this.layers;
   }
 
-  private createLayer(depth: number, prepend: boolean = true) {
+  protected createLayer(depth: number, prepend: boolean = true) {
     const layerElt = document.createElement('div');
     layerElt.classList.add('parallax-layer');
 
@@ -154,30 +153,33 @@ export default class Parrallax {
     return layer;
   }
 
-  private createLayers() {
+  protected createLayers() {
     for (let i = 0; i < this.options.layerCount; i++) {
       const layer = this.createLayer(i);
-      this.staticLayers.push(layer);
+      this.layers.push(layer);
     }
   }
 
-  private addResizeListener() {
-    window.addEventListener('resize', () => {
-      const resizeLayer = (layer: Layer, depth: number) => {
-        const size = this.getLayerSize(depth);
-        const { width, height } = size;
+  protected resizeLayer(layer: Layer, depth: number) {
+    const size = this.getLayerSize(depth);
+    const { width, height } = size;
 
-        layer.element.style.width = `${width}px`;
-        layer.element.style.height = `${height}px`;
-        layer.size = size;
-      };
-
-      for (let i = 0; i < this.staticLayers.length; i++) resizeLayer(this.staticLayers[i], i);
-      for (let i = 0; i < this.temporaryLayers.length; i++) resizeLayer(this.temporaryLayers[i], i);
-    });
+    layer.element.style.width = `${width}px`;
+    layer.element.style.height = `${height}px`;
+    layer.size = size;
   }
 
-  private addMouseListener() {
+  protected resizeHandler() {
+    for (let i = 0; i < this.layers.length; i++) {
+      this.resizeLayer(this.layers[i], i);
+    }
+  }
+
+  protected addResizeListener() {
+    window.addEventListener('resize', this.resizeHandler.bind(this));
+  }
+
+  protected addMouseListener() {
     console.log('Parallax started with mouse');
     document.addEventListener('mousemove', e => {
       this.mousePos = {
@@ -189,7 +191,7 @@ export default class Parrallax {
     });
   }
 
-  private addTouchListener() {
+  protected addTouchListener() {
     console.log('Parallax started for touch devices');
 
     let lastTouch = {
@@ -232,7 +234,7 @@ export default class Parrallax {
     });
   }
 
-  private linkInitialElements() {
+  protected linkInitialElements() {
     const linkedElements = this.options.linkedElements;
     for (const key in linkedElements) {
       const layer = linkedElements[key];
@@ -240,14 +242,14 @@ export default class Parrallax {
     }
   }
 
-  private init() {
+  protected init() {
     this.createLayers();
     this.addResizeListener();
     this.updateLayers();
     this.linkInitialElements();
 
-    for (let i = 0; i < this.staticLayers.length; i++) {
-      const layer = this.staticLayers[i];
+    for (let i = 0; i < this.layers.length; i++) {
+      const layer = this.layers[i];
       this.moveLayerToPosition(layer, layer.targetPosition, layer.targetScale);
     }
 
@@ -259,7 +261,7 @@ export default class Parrallax {
     else this.addMouseListener();
   }
 
-  private getLayerPaddingToScreen(layer: number): Size {
+  protected getLayerPaddingToScreen(layer: number): Size {
     const halfScreenWidth = window.innerWidth / 2;
     const halfScreenHeight = window.innerHeight / 2;
 
@@ -275,7 +277,7 @@ export default class Parrallax {
     };
   }
 
-  private getLayerSize(layer: number): Size {
+  protected getLayerSize(layer: number): Size {
     const layerPaddingToScreen = this.getLayerPaddingToScreen(layer);
     return {
       width: window.innerWidth + 2 * layerPaddingToScreen.width,
@@ -283,7 +285,7 @@ export default class Parrallax {
     };
   }
 
-  private getLayerCenteredPosition(layer: number, centMousePos: Position): Position {
+  protected getLayerCenteredPosition(layer: number, centMousePos: Position): Position {
     const screenWidth = window.innerWidth;
     const screenHeight = window.innerHeight;
 
@@ -302,7 +304,7 @@ export default class Parrallax {
     return res;
   }
 
-  private getLayerScreenPosition(layer: number, centMousPos: Position): Position {
+  protected getLayerScreenPosition(layer: number, centMousPos: Position): Position {
     const { x, y } = this.getLayerCenteredPosition(layer, centMousPos);
     const { width, height } = this.getLayerPaddingToScreen(layer);
 
@@ -312,13 +314,13 @@ export default class Parrallax {
     };
   }
 
-  private moveLayerToPosition(layer: Layer, position: Position, scale: number) {
+  protected moveLayerToPosition(layer: Layer, position: Position, scale: number) {
     layer.element.style.transform = `translate3d(${position.x}px, ${position.y}px, 0) scale(${scale})`;
     layer.position = position;
     layer.scale = scale;
   }
 
-  private animationLoop() {
+  protected animationLoop() {
     const lerp = (start: number, end: number, t: number) => start * (1 - t) + end * t;
     const lerpPosition = (start: Position, end: Position, t: number) => ({
       x: lerp(start.x, end.x, t),
@@ -340,41 +342,27 @@ export default class Parrallax {
     requestAnimationFrame(animate);
   }
 
-  private updateLayers() {
-    for (let i = 0; i < this.staticLayers.length; i++) {
+  protected updateLayers() {
+    for (let i = 0; i < this.layers.length; i++) {
       const centeredMousePos = {
         x: this.mousePos.x - window.innerWidth / 2,
         y: this.mousePos.y - window.innerHeight / 2,
       };
 
-      const layer = this.staticLayers[i];
+      const layer = this.layers[i];
       const { x, y } = this.getLayerScreenPosition(i, centeredMousePos);
 
-      const offsetAccent = (this.staticLayers.length - i - 1) * this.options.originOffsetDepthDampingFactor;
+      const offsetAccent = (this.layers.length - i - 1) * this.options.originOffsetDepthDampingFactor;
       layer.targetPosition.x = this.origin.x * offsetAccent + x;
       layer.targetPosition.y = this.origin.y * offsetAccent + y;
       layer.targetScale = this.zoom;
-    }
-
-    for (let i = 0; i < this.temporaryLayers.length; i++) {
-      const centeredMousePos = {
-        x: this.mousePos.x - window.innerWidth / 2,
-        y: this.mousePos.y - window.innerHeight / 2,
-      };
-      const layer = this.temporaryLayers[i];
-      const { x, y } = this.getLayerScreenPosition(i, centeredMousePos);
-
-      const offsetAccent = (this.staticLayers.length - i - 1) * this.options.originOffsetDepthDampingFactor;
-      layer.targetPosition.x = offsetAccent + x;
-      layer.targetPosition.y = offsetAccent + y;
-      layer.targetScale = 1;
     }
   }
 
   public addElementToLayer(element: HTMLElement, layer: number): Parrallax {
     if (layer < 0 || layer > this.options.layerCount) throw new Error(`Layer must be between 0 and ${this.options.layerCount}`);
 
-    const layerRoot = this.staticLayers[layer];
+    const layerRoot = this.layers[layer];
     layerRoot.element.appendChild(element);
 
     return this;
@@ -386,26 +374,10 @@ export default class Parrallax {
     const elt = document.getElementById(id);
     if (!elt) throw new Error(`Could not find element with id ${id}`);
 
-    const layerRoot = this.staticLayers[layer];
+    const layerRoot = this.layers[layer];
     layerRoot.element.appendChild(elt);
 
     return this;
-  }
-
-  public createTemporyLayer(): HTMLElement {
-    const layer = this.createLayer(0, false);
-    this.temporaryLayers.push(layer);
-    this.updateLayers();
-    return layer.element;
-  }
-
-  public deleteAllTemporaryLayers() {
-    for (let i = 0; i < this.temporaryLayers.length; i++) {
-      const layer = this.temporaryLayers[i];
-      layer.element.remove();
-    }
-
-    this.temporaryLayers = [];
   }
 
   public setDevMode(active: boolean): void {

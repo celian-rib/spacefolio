@@ -1,7 +1,7 @@
 import './style.css';
 import './parallax/parallax.css';
 
-import Parallax from './parallax/parallax.ts';
+import TemporaryLayersParallax from './parallax/temporaryLayersParallax.ts';
 
 import './effects/animatedText.ts';
 import './effects/planetsDistances.ts';
@@ -12,7 +12,7 @@ import startLoadOverlay from './effects/loadOverlay.ts';
 
 import registerPlanetsInteractivity from './interactivity/planets.ts';
 
-const parallax = new Parallax({
+const parallax = new TemporaryLayersParallax({
   layerCount: 5,
   displacementFactor: 1.4,
   layerScaleDifferencePx: 110,

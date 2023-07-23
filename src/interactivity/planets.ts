@@ -1,8 +1,8 @@
-import Parallax from '../parallax/parallax';
+import TemporaryLayersParallax from '../parallax/temporaryLayersParallax';
 
 import './planets.css';
 
-export default function registerPlanetsInteractivity(parallax: Parallax) {
+export default function registerPlanetsInteractivity(parallax: TemporaryLayersParallax) {
   const goBackButton = document.getElementById('go-back-button')!;
   const planets = document.getElementsByClassName('planet');
 
