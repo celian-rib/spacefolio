@@ -50,6 +50,10 @@ export default class TemporaryLayersParallax extends Parrallax {
   public deleteAllTemporaryLayers() {
     for (let i = 0; i < this.temporaryLayers.length; i++) {
       const layer = this.temporaryLayers[i];
+      const toExtractFromLayer = [...layer.element.children];
+      for (const elt of toExtractFromLayer) {
+        this.root.appendChild(elt);
+      }
       layer.element.remove();
     }
 

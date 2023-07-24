@@ -1,6 +1,13 @@
+import animateText from '../effects/animatedText';
 import TemporaryLayersParallax from '../parallax/temporaryLayersParallax';
 
 import './planets.css';
+
+function getPlanetContentElt(planet: Element) {
+  const contentId = planet.computedStyleMap().get('--content')?.toString();
+  if (contentId == null) return null;
+  return document.getElementById(contentId);
+}
 
 export default function registerPlanetsInteractivity(parallax: TemporaryLayersParallax) {
   const goBackButton = document.getElementById('go-back-button')!;
@@ -33,6 +40,12 @@ export default function registerPlanetsInteractivity(parallax: TemporaryLayersPa
       layerElt.appendChild(goBackButton);
 
       planet.classList.add('active-planet');
+
+      const contentBody = getPlanetContentElt(planet);
+      if (contentBody == null) return;
+      animateText(contentBody);
+      layerElt.appendChild(contentBody);
+      contentBody.style.display = 'block';
     };
 
     const unfocusPlanet = () => {
@@ -40,12 +53,17 @@ export default function registerPlanetsInteractivity(parallax: TemporaryLayersPa
       parallax.setZoom(1);
 
       goBackButton.removeEventListener('click', unfocusPlanet);
+      goBackButton.style.display = 'none';
 
       parallax.deleteAllTemporaryLayers();
 
       setTimeout(() => {
         planet.classList.remove('active-planet');
       }, 1000);
+
+      const contentBody = getPlanetContentElt(planet);
+      if (contentBody == null) return;
+      contentBody.style.display = 'none';
     };
 
     planet.addEventListener('click', () => {

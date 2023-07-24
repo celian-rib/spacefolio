@@ -11,6 +11,7 @@ import addStarsToParallax from './effects/stars.ts';
 import startLoadOverlay from './effects/loadOverlay.ts';
 
 import registerPlanetsInteractivity from './interactivity/planets.ts';
+import animateText from './effects/animatedText.ts';
 
 const parallax = new TemporaryLayersParallax({
   layerCount: 5,
@@ -34,6 +35,7 @@ const parallax = new TemporaryLayersParallax({
 
 addStarsToParallax(parallax, 300);
 registerPlanetsInteractivity(parallax);
+animateText(parallax.getLayers()[0].element);
 
 startLoadOverlay(() => {
   parallax.startInteraction();
