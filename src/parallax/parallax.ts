@@ -96,6 +96,11 @@ export default class Parrallax {
   protected origin: Position = { x: 0, y: 0 };
   protected zoom: number = 1;
 
+  // Allow smooth start of lerp values
+  // Usefull to ease movement if mouse is far away from center on start of parallax.
+  protected lerpInFactor: number = 0;
+  protected lerpInFactorTarget: number = 0;
+
   constructor(options: OptionalParallaxOptions) {
     const root = document.getElementById('parallax-root');
 
@@ -259,6 +264,7 @@ export default class Parrallax {
   public startInteraction() {
     if (this.isTouchDevice) this.addTouchListener();
     else this.addMouseListener();
+    this.lerpInFactorTarget = 1;
   }
 
   protected getLayerPaddingToScreen(layer: number): Size {
@@ -328,11 +334,14 @@ export default class Parrallax {
     });
 
     const animate = () => {
+      this.lerpInFactor = lerp(this.lerpInFactor, this.lerpInFactorTarget, 0.02);
+      const lerpValue = this.options.animationInterpolationFactor * this.lerpInFactor;
+
       const layers = this.getLayers();
       for (let i = 0; i < layers.length; i++) {
         const layer = layers[i];
-        const newPosition = lerpPosition(layer.position, layer.targetPosition, this.options.animationInterpolationFactor);
-        const newScale = lerp(layer.scale, layer.targetScale, this.options.animationInterpolationFactor);
+        const newPosition = lerpPosition(layer.position, layer.targetPosition, lerpValue);
+        const newScale = lerp(layer.scale, layer.targetScale, lerpValue);
         this.moveLayerToPosition(layer, newPosition, newScale);
       }
 
