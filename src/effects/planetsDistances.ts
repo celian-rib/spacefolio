@@ -16,7 +16,7 @@ document.addEventListener('mousemove', e => {
     const text = direction.querySelector('p')!;
 
     if (distanceToMouse < planetRadius) {
-      text.innerHTML = `click to land`;
+      text.innerHTML = `click to orbit`;
     } else {
       distanceToMouse = Math.max(distanceToMouse * 10 - 500, 0);
 

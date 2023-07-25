@@ -186,26 +186,3 @@
   background-color: rgba(255, 255, 255, 0.17);
 }
 
-.planet-content {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-
-  transform: translate(-50%, -50%);
-  display: none;
-}
-
-.planet-content h1, .planet-content p {
-  color: white;
-  text-shadow: 0 5px 0 #58aed9;
-  font-size: 4rem;
-  margin: 0;
-}
-
-#contact {
-  top: 60%;
-}
-
-#about-me {
-  top: 40%;
-}

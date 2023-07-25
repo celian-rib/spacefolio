@@ -1,4 +1,5 @@
 import './style.css';
+import './content.css';
 import './parallax/parallax.css';
 
 import TemporaryLayersParallax from './parallax/temporaryLayersParallax.ts';
@@ -6,6 +7,7 @@ import TemporaryLayersParallax from './parallax/temporaryLayersParallax.ts';
 import './effects/animatedText.ts';
 import './effects/planetsDistances.ts';
 import './effects/loadOverlay.ts';
+import './effects/dateSinceText.ts';
 
 import addStarsToParallax from './effects/stars.ts';
 import startLoadOverlay from './effects/loadOverlay.ts';
