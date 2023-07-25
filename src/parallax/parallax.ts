@@ -184,6 +184,13 @@ export default class Parrallax {
     window.addEventListener('resize', this.resizeHandler.bind(this));
   }
 
+  protected addFocusListener() {
+    window.addEventListener('visibilitychange', () => {
+      this.lerpInFactorTarget = 1;
+      this.lerpInFactor = 0;
+    });
+  }
+
   protected addMouseListener() {
     console.log('Parallax started with mouse');
     document.addEventListener('mousemove', e => {
@@ -192,7 +199,9 @@ export default class Parrallax {
         y: e.clientY,
       };
 
-      this.updateLayers();
+      if (!e.altKey) {
+        this.updateLayers();
+      }
     });
   }
 
@@ -222,8 +231,6 @@ export default class Parrallax {
         y: touchDirection.y / touchDirectionMagnitude,
       };
 
-      console.log(normalizedTouchDirection);
-
       const sensitivity = this.options.touchDeviceSensitivity / window.devicePixelRatio;
 
       this.mousePos = {
@@ -252,6 +259,7 @@ export default class Parrallax {
     this.addResizeListener();
     this.updateLayers();
     this.linkInitialElements();
+    this.addFocusListener();
 
     for (let i = 0; i < this.layers.length; i++) {
       const layer = this.layers[i];

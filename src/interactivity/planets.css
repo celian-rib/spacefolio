@@ -20,15 +20,14 @@
 }
 
 .planet h2 {
-  margin-top: 10px;
   font-size: 2rem;
   font-weight: bold;
   margin: 0;
-  transition: transform 0.5s ease-in-out;
+  margin-top: 10px;
   text-shadow: 0 4px 0 #8c58d9;
 
   opacity: 1;
-  transition: opacity 0.5s ease-in-out;
+  transition: 0.5s ease-in-out;
 }
 
 .planet p {

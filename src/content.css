@@ -42,6 +42,22 @@
     top: 58%;
 }
 
+#links img {
+    width: 40px;
+    height: 40px;
+    filter: brightness(0) invert(1);
+}
+
+#links a:first-child {
+    margin-right: 30px;
+}
+
+#links main {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 #about-me {
     top: 30%;
 }
