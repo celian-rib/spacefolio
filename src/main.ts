@@ -27,7 +27,6 @@ const parallax = new TemporaryLayersParallax({
     'planet-1': 1,
     'planet-2': 1,
     'planet-3': 1,
-    'planet-4': 1,
     'bg-gaz-planet': 3,
     'bg-black-hole': 3,
     'bg-asteroid-1': 2,

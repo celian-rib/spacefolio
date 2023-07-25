@@ -1,7 +1,7 @@
 .planet {
   position: absolute;
-  top: 50%;
-  left: 50%;
+  left: calc(50% + var(--x, 0px));
+  top: calc(48% + var(--y, 0px));
   transform: translate(-50%, -50%);
 
   color: #fff;
@@ -60,22 +60,6 @@
   filter: drop-shadow(0 3px 0 white) drop-shadow(0 -3px 0 white) drop-shadow(3px 0 0 white) drop-shadow(-3px 0 0 white);
 }
 
-#planet-1 {
-  top: 30%;
-}
-
-#planet-2 {
-  left: 70%;
-}
-
-#planet-3 {
-  top: 70%;
-}
-
-#planet-4 {
-  left: 30%;
-}
-
 .bg-planet {
   image-rendering: pixelated;
   image-rendering: -moz-crisp-edges;
@@ -105,7 +89,7 @@
 }
 
 #bg-gaz-planet {
-  left: 60%;
+  left: 50%;
   top: 30%;
 }
 

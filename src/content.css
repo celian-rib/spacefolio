@@ -7,18 +7,18 @@
     display: none;
 }
 
-.planet-content header>h1,
-.planet-content header>p {
+.planet-content h1 {
     color: white;
     text-shadow: 0 5px 0 #58aed9;
-    font-size: 4rem;
+    font-size: 3rem;
     margin: 0;
     text-align: center;
 }
 
-.planet-content header>p {
+.planet-content h1 > span:not(.letter) {
+    margin: 0;
     text-shadow: 0 3px 0 #58aed9;
-    font-size: 2rem;
+    font-size: 2rem !important;
 }
 
 .planet-content main {
@@ -34,12 +34,13 @@
     margin-top: 50px;
 }
 
-.planet-content main p {
-    font-size: 1.3rem;
+.planet-content main div p {
+    font-size: 1.2rem;
 }
 
 #links {
-    top: 58%;
+    top: 65%;
+    left: 45%;
 }
 
 #links img {
@@ -59,7 +60,8 @@
 }
 
 #about-me {
-    top: 30%;
+    top: 33%;
+    left: 40%;
 }
 
 #about-me main p {
@@ -68,8 +70,19 @@
 }
 
 #about-me main span {
-    font-size: 0.9rem;
+    margin-top: 5px;
+    font-size: 0.8rem;
     opacity: 0.7;
+}
+
+#about-me main div {
+    background-color: rgba(2, 8, 28, 0.387);
+    padding: 20px 25px;
+    border-radius: 20px;
+}
+
+#about-me main div p:first-child {
+    margin-top: 0;
 }
 
 #about-me>div {

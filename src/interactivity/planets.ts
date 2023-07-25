@@ -3,6 +3,25 @@ import TemporaryLayersParallax from '../parallax/temporaryLayersParallax';
 
 import './planets.css';
 
+const PLANET_DISPOSITION_CIRCLE_RADIUS = 450;
+
+const planets = document.querySelectorAll('.planet');
+
+function getPlanetPositionOffset(index: number) {
+  const offsetAngle = (Math.PI / 4) * 5;
+  const angle = (index / planets.length) * 2 * Math.PI + offsetAngle;
+  const x = PLANET_DISPOSITION_CIRCLE_RADIUS * Math.cos(angle);
+  const y = PLANET_DISPOSITION_CIRCLE_RADIUS * Math.sin(angle);
+  return { x, y };
+}
+
+planets.forEach((_planet, index) => {
+  const planet = _planet as HTMLElement;
+  const { x, y } = getPlanetPositionOffset(index);
+  planet.style.setProperty('--x', `${x}px`);
+  planet.style.setProperty('--y', `${y}px`);
+});
+
 function getPlanetContentElt(planet: Element) {
   const contentId = planet.computedStyleMap().get('--content')?.toString();
   if (contentId == null) return null;
@@ -15,21 +34,16 @@ export default function registerPlanetsInteractivity(parallax: TemporaryLayersPa
 
   goBackButton.style.display = 'none';
 
-  const horizontalDistance = 1900;
-  const verticalDistance = 1000;
-
-  const planetsLockPositions = [
-    { x: 0, y: verticalDistance },
-    { x: -horizontalDistance, y: 0 },
-    { x: 0, y: -verticalDistance },
-    { x: horizontalDistance, y: 0 },
-  ];
-
   for (let i = 0; i < planets.length; i++) {
     const planet = planets[i];
 
     const focusPlanet = () => {
-      parallax.setOrigin(planetsLockPositions[i]);
+      const planetPosition = getPlanetPositionOffset(i);
+      const newOrigin = {
+        x: planetPosition.x * -4,
+        y: planetPosition.y * -4,
+      };
+      parallax.setOrigin(newOrigin);
       parallax.setZoom(3);
 
       goBackButton.style.display = 'block';
