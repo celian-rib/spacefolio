@@ -22,8 +22,13 @@ planets.forEach((_planet, index) => {
   planet.style.setProperty('--y', `${y}px`);
 });
 
-function getPlanetContentElt(planet: Element) {
+function getPlanetContentId(planet: Element) {
   const contentId = planet.computedStyleMap().get('--content')?.toString();
+  return contentId;
+}
+
+function getPlanetContentElt(planet: Element) {
+  const contentId = getPlanetContentId(planet);
   if (contentId == null) return null;
   return document.getElementById(contentId);
 }
@@ -66,6 +71,7 @@ export default function registerPlanetsInteractivity(parallax: TemporaryLayersPa
       parallax.setOrigin({ x: 0, y: 0 });
       parallax.setZoom(1);
 
+      window.removeEventListener('popstate', unfocusPlanet);
       goBackButton.removeEventListener('click', unfocusPlanet);
       goBackButton.style.display = 'none';
 
@@ -84,6 +90,10 @@ export default function registerPlanetsInteractivity(parallax: TemporaryLayersPa
       if (planet.classList.contains('active-planet')) return;
       focusPlanet();
       goBackButton.addEventListener('click', unfocusPlanet);
+      const contentId = getPlanetContentId(planet);
+
+      history.pushState({ contentId }, '');
+      window.addEventListener('popstate', unfocusPlanet);
     });
   }
 }
