@@ -170,41 +170,11 @@ footer {
   }
 }
 
-.pixel-corners {
-  clip-path: polygon(0px calc(100% - 32px),
-      8px calc(100% - 32px),
-      8px calc(100% - 24px),
-      16px calc(100% - 24px),
-      16px calc(100% - 16px),
-      24px calc(100% - 16px),
-      24px calc(100% - 8px),
-      32px calc(100% - 8px),
-      32px 100%,
-      calc(100% - 32px) 100%,
-      calc(100% - 32px) calc(100% - 8px),
-      calc(100% - 24px) calc(100% - 8px),
-      calc(100% - 24px) calc(100% - 16px),
-      calc(100% - 16px) calc(100% - 16px),
-      calc(100% - 16px) calc(100% - 24px),
-      calc(100% - 8px) calc(100% - 24px),
-      calc(100% - 8px) calc(100% - 32px),
-      100% calc(100% - 32px),
-      100% 32px,
-      calc(100% - 8px) 32px,
-      calc(100% - 8px) 24px,
-      calc(100% - 16px) 24px,
-      calc(100% - 16px) 16px,
-      calc(100% - 24px) 16px,
-      calc(100% - 24px) 8px,
-      calc(100% - 32px) 8px,
-      calc(100% - 32px) 0px,
-      32px 0px,
-      32px 8px,
-      24px 8px,
-      24px 16px,
-      16px 16px,
-      16px 24px,
-      8px 24px,
-      8px 32px,
-      0px 32px);
+.glassy-background {
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 32px 0 rgba(32, 35, 74, 0.37);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
 }

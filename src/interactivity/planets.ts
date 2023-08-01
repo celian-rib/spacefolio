@@ -28,7 +28,7 @@ function getPlanetPositionOffset(index: number) {
 }
 
 function getPlanetContentId(planet: Element) {
-  const contentId = planet.computedStyleMap().get('--content')?.toString();
+  const contentId = getComputedStyle(planet).getPropertyValue('--content')?.toString();
   return contentId;
 }
 
