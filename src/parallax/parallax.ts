@@ -96,7 +96,7 @@ export default class Parrallax {
   protected origin: Position = { x: 0, y: 0 };
   protected zoom: number = 1;
 
-  // Allow smooth start of lerp values
+  // Allows smooth start of lerp values
   // Usefull to ease movement if mouse is far away from center on start of parallax.
   protected lerpInFactor: number = 0;
   protected lerpInFactorTarget: number = 0;

@@ -58,6 +58,10 @@ const PROJECTS_DATAS: ProjectData[] = [
 ];
 
 const PROJECTS: ProjectItem[] = [];
+const animationData = {
+  targetMouseX: 0,
+  currentMouseX: 0,
+};
 
 const PROJECTS_CONTAINER = document.getElementById('projects-container') as HTMLElement;
 
@@ -66,24 +70,22 @@ function createProjectElement(project: ProjectData) {
   projectElt.classList.add('project');
   projectElt.classList.add('glassy-background');
   projectElt.innerHTML = `
-    <div class="project-title">${project.title}</div>
-    <div class="project-date">${project.startDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short' })} - ${
-      project.endDate?.toLocaleDateString('en-US', { year: 'numeric', month: 'short' }) ?? 'Present'
-    }</div>
-    <div class="project-description">${project.description}</div>
-    <div class="project-technologies">${project.technologies?.join(', ')}</div>
+    <p>WIP</p> 
   `;
   return projectElt;
 }
 
 function setProjectItemPosition(item: ProjectItem, mouseX: number) {
   const centeredMouseX = mouseX - window.innerWidth / 2;
+  const reducedCenteredMouseX = centeredMouseX * 2;
+
   const radius = window.innerWidth * 2;
 
   const spreadAngle = Math.PI / 3;
 
   const initialOffset = Math.PI;
-  const mouseOffset = -(centeredMouseX / window.innerWidth) * (spreadAngle / PROJECTS_DATAS.length);
+
+  const mouseOffset = -(reducedCenteredMouseX / window.innerWidth) * (spreadAngle / PROJECTS_DATAS.length);
 
   const offsetAngle = initialOffset + mouseOffset;
   const rotateAngle = spreadAngle + (spreadAngle / (PROJECTS_DATAS.length - 1)) * item.index + offsetAngle;
@@ -97,10 +99,25 @@ function setProjectItemPosition(item: ProjectItem, mouseX: number) {
 
 function handleMouseMovements() {
   window.addEventListener('mousemove', event => {
-    PROJECTS.forEach(project => {
-      setProjectItemPosition(project, event.clientX);
-    });
+    animationData.targetMouseX = event.clientX;
   });
+}
+
+function animationLoop() {
+  const lerp = (start: number, end: number, t: number) => start * (1 - t) + end * t;
+
+  const animate = () => {
+    requestAnimationFrame(animate);
+
+    const { currentMouseX, targetMouseX } = animationData;
+
+    animationData.currentMouseX = lerp(currentMouseX, targetMouseX, 0.1);
+    PROJECTS.forEach(project => {
+      setProjectItemPosition(project, animationData.currentMouseX);
+    });
+  };
+
+  requestAnimationFrame(animate);
 }
 
 export default function initializeProjects() {
@@ -116,4 +133,5 @@ export default function initializeProjects() {
   });
 
   handleMouseMovements();
+  animationLoop();
 }

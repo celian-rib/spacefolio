@@ -109,20 +109,39 @@
 #projects {
   width: 100vw;
   height: 100vh;
+
+  pointer-events: none;
 }
 
 #projects main {
   width: 100%;
 }
 
+#projects>h1 {
+  position: absolute;
+  left: 50%;
+  top: -10%;
+  transform: translate(-50%, -50%);
+}
+
 .project {
   transform: translate(-50%, -50%);
 
   width: 400px;
-  height: 100px;
+  height: 200px;
 
   position: absolute;
-  
+
   left: calc(50% + var(--x));
-  top: calc(30% + var(--y));
+  top: calc(20% + var(--y));
+
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.project>p {
+  font-size: 20px;
+  font-weight: bold;
 }
