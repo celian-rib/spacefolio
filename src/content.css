@@ -105,3 +105,24 @@
 #about-me>div p {
   margin-left: 20px;
 }
+
+#projects {
+  width: 100vw;
+  height: 100vh;
+}
+
+#projects main {
+  width: 100%;
+}
+
+.project {
+  transform: translate(-50%, -50%);
+
+  width: 400px;
+  height: 100px;
+
+  position: absolute;
+  
+  left: calc(50% + var(--x));
+  top: calc(30% + var(--y));
+}
