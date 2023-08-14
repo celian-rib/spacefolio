@@ -1,9 +1,12 @@
 interface ProjectData {
   title: string;
-  startDate: Date;
-  endDate?: Date;
-  description?: string;
-  technologies?: string[];
+  status: 'Private' | 'WIP' | 'Public' | 'Released';
+  startDate: string;
+  endDate?: string;
+  description: string;
+  role: string;
+  tags: string[];
+  language: 'C++' | 'Typescript' | 'Javascript' | 'C' | 'Java';
 }
 
 interface ProjectItem {
@@ -14,46 +17,64 @@ interface ProjectItem {
 
 const PROJECTS_DATAS: ProjectData[] = [
   {
-    title: ' as My Project',
-    startDate: new Date(2021, 0, 1),
-    endDate: new Date(2021, 0, 1),
-    description: 'My project description',
-    technologies: ['TypeScript', 'React', 'Node.js', 'Express', 'MongoDB', 'Docker', 'Kubernetes', 'AWS'],
+    title: 'silant-app',
+    status: 'Released',
+    language: 'Typescript',
+    startDate: 'December 2019',
+    endDate: 'July 2021',
+    description: 'Silant is mobile application that let everyone control the music played in a party.',
+    role: 'Co-founder & Mobile developer',
+    tags: ['React Native', 'Design', 'Marketing'],
   },
   {
-    title: ' as My Project',
-    startDate: new Date(2021, 0, 1),
-    endDate: new Date(2021, 0, 1),
-    description: 'My project description',
-    technologies: ['TypeScript', 'React', 'Node.js', 'Express', 'MongoDB', 'Docker', 'Kubernetes', 'AWS'],
+    title: 'spider-web-server',
+    status: 'Private',
+    language: 'C++',
+    startDate: 'May 2023',
+    endDate: 'July 2023',
+    description: 'HTTP 1.1 Static file with Nginx like feature such as Reverse Proxy and Load Balancer.',
+    role: 'Lead software designer & Developer',
+    tags: ['Boost.Asio', 'Cmake', 'SSL / TLS'],
   },
   {
-    title: ' as My Project',
-    startDate: new Date(2021, 0, 1),
-    endDate: new Date(2021, 0, 1),
-    description: 'My project description',
-    technologies: ['TypeScript', 'React', 'Node.js', 'Express', 'MongoDB', 'Docker', 'Kubernetes', 'AWS'],
+    title: 'spider-web-server',
+    status: 'Private',
+    language: 'C++',
+    startDate: 'May 2023',
+    endDate: 'July 2023',
+    description: 'HTTP 1.1 Static file with Nginx like feature such as Reverse Proxy and Load Balancer.',
+    role: 'Lead software designer & Developer',
+    tags: ['Boost.Asio', 'Cmake', 'SSL / TLS'],
   },
   {
-    title: ' as My Project',
-    startDate: new Date(2021, 0, 1),
-    endDate: new Date(2021, 0, 1),
-    description: 'My project description',
-    technologies: ['TypeScript', 'React', 'Node.js', 'Express', 'MongoDB', 'Docker', 'Kubernetes', 'AWS'],
+    title: 'spider-web-server',
+    status: 'Private',
+    language: 'C++',
+    startDate: 'May 2023',
+    endDate: 'July 2023',
+    description: 'HTTP 1.1 Static file with Nginx like feature such as Reverse Proxy and Load Balancer.',
+    role: 'Lead software designer & Developer',
+    tags: ['Boost.Asio', 'Cmake', 'SSL / TLS'],
   },
   {
-    title: ' as My Project',
-    startDate: new Date(2021, 0, 1),
-    endDate: new Date(2021, 0, 1),
-    description: 'My project description',
-    technologies: ['TypeScript', 'React', 'Node.js', 'Express', 'MongoDB', 'Docker', 'Kubernetes', 'AWS'],
+    title: 'spider-web-server',
+    status: 'Private',
+    language: 'C++',
+    startDate: 'May 2023',
+    endDate: 'July 2023',
+    description: 'HTTP 1.1 Static file with Nginx like feature such as Reverse Proxy and Load Balancer.',
+    role: 'Lead software designer & Developer',
+    tags: ['Boost.Asio', 'Cmake', 'SSL / TLS'],
   },
   {
-    title: ' as My Project',
-    startDate: new Date(2021, 0, 1),
-    endDate: new Date(2021, 0, 1),
-    description: 'My project description',
-    technologies: ['TypeScript', 'React', 'Node.js', 'Express', 'MongoDB', 'Docker', 'Kubernetes', 'AWS'],
+    title: 'spider-web-server',
+    status: 'Private',
+    language: 'C++',
+    startDate: 'May 2023',
+    endDate: 'July 2023',
+    description: 'HTTP 1.1 Static file with Nginx like feature such as Reverse Proxy and Load Balancer.',
+    role: 'Lead software designer & Developer',
+    tags: ['Boost.Asio', 'Cmake', 'SSL / TLS'],
   },
 ];
 
@@ -64,14 +85,49 @@ const animationData = {
 };
 
 const PROJECTS_CONTAINER = document.getElementById('projects-container') as HTMLElement;
+const PROJECT_ITEM_TEMPLATE = document.getElementById('project-template') as HTMLElement;
+
+PROJECT_ITEM_TEMPLATE.remove();
 
 function createProjectElement(project: ProjectData) {
-  const projectElt = document.createElement('div');
-  projectElt.classList.add('project');
-  projectElt.classList.add('glassy-background');
-  projectElt.innerHTML = `
-    <p>WIP</p> 
-  `;
+  // duplicate template
+  const projectElt = PROJECT_ITEM_TEMPLATE.cloneNode(true) as HTMLElement;
+  projectElt.removeAttribute('id');
+  projectElt.classList.remove('hidden');
+
+  // set title
+  const titleElt = projectElt.querySelector('.project-header > a') as HTMLElement;
+  titleElt.textContent = project.title;
+
+  // TODO set link
+
+  // set status
+  const statusElt = projectElt.querySelector('.project-header > p') as HTMLElement;
+  statusElt.textContent = project.status;
+
+  // set description
+  const descriptionElt = projectElt.querySelector('.project-main-content > p') as HTMLElement;
+  descriptionElt.textContent = project.description;
+
+  // TODO set lang color
+
+  // set language
+  const languageElt = projectElt.querySelector('.project-language') as HTMLElement;
+  languageElt.textContent = project.language;
+
+  // set tags
+  const tagsContainerElt = projectElt.querySelector('.project-tags') as HTMLElement;
+  project.tags.forEach(tag => {
+    const tagElt = document.createElement('p');
+    tagElt.classList.add('project-tag');
+    tagElt.innerText = tag;
+    tagsContainerElt.appendChild(tagElt);
+  });
+
+  // set dates and role
+  const dateRoleElt = projectElt.querySelector('.project-footer > p') as HTMLElement;
+  dateRoleElt.innerText = `${project.startDate} - ${project.endDate ?? 'now'} • ${project.role}`;
+
   return projectElt;
 }
 

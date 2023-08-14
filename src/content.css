@@ -34,7 +34,7 @@
   margin-top: 50px;
 }
 
-.planet-content main div p {
+.planet-content>main>div>p {
   font-size: 1.2rem;
 }
 
@@ -125,7 +125,8 @@
 }
 
 .project {
-  transform: translate(-50%, -50%);
+  pointer-events: all;
+  font-family: sans-serif;
 
   width: 400px;
   height: 200px;
@@ -135,13 +136,119 @@
   left: calc(50% + var(--x));
   top: calc(20% + var(--y));
 
-  padding: 10px;
+  padding: 20px;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-between;
+  transform: translate(-50%, -50%);
+
+  transition: background-color 0.5s;
 }
 
-.project>p {
-  font-size: 20px;
+.project:hover {
+  background-color: rgba(66, 77, 87, 0.755);
+}
+
+.project-main-content {
+  width: 100%;
+}
+
+.project-header {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+}
+
+.project-header img {
+  margin-top: 5px;
+  margin-right: 20px;
+}
+
+.project-header a {
+  text-decoration: none;
+  color: #539BF5;
   font-weight: bold;
 }
+
+.project-header a:hover {
+  text-decoration: underline;
+}
+
+.project-header p {
+  margin: 2px 0 0 10px;
+  padding: 3px 5px;
+  color: lightgray;
+  border: solid grey 1px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+.project-main-content>p {
+  color: rgb(205, 205, 205);
+}
+
+.project-language {
+  display: flex;
+  align-items: center;
+}
+
+.project-language p {
+  margin: 0;
+  color: rgb(228, 228, 228);
+}
+
+.project-language div {
+  width: 10px;
+  height: 10px;
+  background-color: pink;
+  border-radius: 100%;
+  margin-right: 7px;
+}
+
+.project-tags {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.project-tag {
+  padding: 5px 10px;
+  margin: 0;
+  margin-right: 10px;
+  border-radius: 7px;
+  background: rgba(42, 59, 80, 0.53);
+  color: #75B0F9;
+  font-size: 13px;
+}
+
+.project-footer>p {
+  font-size: 12px;
+  margin-bottom: 0;
+  color: white;
+}
+
+/* 
+.project header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+
+}
+
+.project header h3 {
+  font-size: 1.6rem;
+  font-weight: bold;
+}
+
+.project header div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.project header div p {
+  font-size: 1rem;
+  margin: 0;
+} */
