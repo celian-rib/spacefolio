@@ -40,6 +40,6 @@ registerPlanetsInteractivity(parallax);
 animateText(parallax.getLayers()[0].element);
 initializeProjects();
 
-parallax.startInteraction();
-// startLoadOverlay(() => {
-// }, 3000);
+startLoadOverlay(() => {
+  parallax.startInteraction();
+}, 3000);
