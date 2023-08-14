@@ -1,3 +1,5 @@
+type Language = 'C++' | 'Typescript' | 'Javascript' | 'C' | 'Java';
+
 interface ProjectData {
   title: string;
   status: 'Private' | 'WIP' | 'Public' | 'Released';
@@ -6,7 +8,7 @@ interface ProjectData {
   description: string;
   role: string;
   tags: string[];
-  language: 'C++' | 'Typescript' | 'Javascript' | 'C' | 'Java';
+  language: Language;
 }
 
 interface ProjectItem {
@@ -14,6 +16,16 @@ interface ProjectItem {
   index: number;
   element: HTMLElement;
 }
+
+const LANGUAGE_COLORS: {
+  [K in Language]: string;
+} = {
+  C: '#555555',
+  'C++': '#f34b7d',
+  Java: '#b07219',
+  Javascript: '#f1e05a',
+  Typescript: '#3178c6 ',
+};
 
 const PROJECTS_DATAS: ProjectData[] = [
   {
@@ -37,44 +49,44 @@ const PROJECTS_DATAS: ProjectData[] = [
     tags: ['Boost.Asio', 'Cmake', 'SSL / TLS'],
   },
   {
-    title: 'spider-web-server',
+    title: '42-sh',
     status: 'Private',
-    language: 'C++',
-    startDate: 'May 2023',
-    endDate: 'July 2023',
-    description: 'HTTP 1.1 Static file with Nginx like feature such as Reverse Proxy and Load Balancer.',
-    role: 'Lead software designer & Developer',
-    tags: ['Boost.Asio', 'Cmake', 'SSL / TLS'],
+    language: 'C',
+    startDate: 'January 2023',
+    endDate: 'February 2023',
+    description: 'POSIX compliant bash like shell language, it can interpret execute large bash scripts with all expected IO.',
+    role: 'Developer',
+    tags: ['Bash / POSIX', 'Memory Leaks', 'Lexer', 'Parser'],
   },
   {
-    title: 'spider-web-server',
+    title: 'tiger-lang',
     status: 'Private',
     language: 'C++',
-    startDate: 'May 2023',
-    endDate: 'July 2023',
-    description: 'HTTP 1.1 Static file with Nginx like feature such as Reverse Proxy and Load Balancer.',
-    role: 'Lead software designer & Developer',
-    tags: ['Boost.Asio', 'Cmake', 'SSL / TLS'],
+    startDate: 'March 2023',
+    endDate: 'June 2023',
+    description: 'Tiger is a language made with C++, is has C like control flow and uses LLVM as compiling backend.',
+    role: 'Developer',
+    tags: ['Lexer', 'Parser', 'Binder', 'Type check', 'LLVM'],
   },
   {
-    title: 'spider-web-server',
-    status: 'Private',
-    language: 'C++',
-    startDate: 'May 2023',
-    endDate: 'July 2023',
-    description: 'HTTP 1.1 Static file with Nginx like feature such as Reverse Proxy and Load Balancer.',
-    role: 'Lead software designer & Developer',
-    tags: ['Boost.Asio', 'Cmake', 'SSL / TLS'],
+    title: 'hypnoledge-app',
+    status: 'Released',
+    language: 'Javascript',
+    startDate: 'May 2022',
+    endDate: 'July 2022',
+    description: 'I worked on Hypnoledge during a mobile app development internship over the course of two months.',
+    role: 'Lead Developer',
+    tags: ['React Native', 'Animated'],
   },
   {
-    title: 'spider-web-server',
-    status: 'Private',
-    language: 'C++',
+    title: 'upthumb.io',
+    status: 'Released',
+    language: 'Typescript',
     startDate: 'May 2023',
     endDate: 'July 2023',
-    description: 'HTTP 1.1 Static file with Nginx like feature such as Reverse Proxy and Load Balancer.',
-    role: 'Lead software designer & Developer',
-    tags: ['Boost.Asio', 'Cmake', 'SSL / TLS'],
+    description: 'SaaS product that let YouTube content creators find the right thumbnail for their videos using automation.',
+    role: 'Founder & Developer',
+    tags: ['Next.js', 'Docker', 'Stripe'],
   },
 ];
 
@@ -109,10 +121,12 @@ function createProjectElement(project: ProjectData) {
   const descriptionElt = projectElt.querySelector('.project-main-content > p') as HTMLElement;
   descriptionElt.textContent = project.description;
 
-  // TODO set lang color
+  // set lang color
+  const langColorElt = projectElt.querySelector('.project-language > div') as HTMLElement;
+  langColorElt.style.backgroundColor = LANGUAGE_COLORS[project.language];
 
   // set language
-  const languageElt = projectElt.querySelector('.project-language') as HTMLElement;
+  const languageElt = projectElt.querySelector('.project-language > p') as HTMLElement;
   languageElt.textContent = project.language;
 
   // set tags
