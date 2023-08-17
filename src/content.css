@@ -198,17 +198,25 @@
 .project-language p {
   margin: 0;
   color: rgb(228, 228, 228);
+  font-size: 12px;
 }
 
 .project-language div {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   background-color: pink;
   border-radius: 100%;
   margin-right: 7px;
 }
 
-.project-tags {
+.project-soft-tags {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.project-hard-tags {
+  margin-top: 10px;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -217,11 +225,16 @@
 .project-tag {
   padding: 5px 10px;
   margin: 0;
+  margin-top: 4px;
   margin-right: 10px;
   border-radius: 7px;
   background: rgba(23, 36, 51, 0.53);
   color: #75B0F9;
   font-size: 13px;
+}
+
+.project-soft-tags > .project-tag {
+  color: #d08c43;
 }
 
 .project-footer>p {

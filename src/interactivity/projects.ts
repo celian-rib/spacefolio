@@ -7,7 +7,8 @@ interface ProjectData {
   endDate?: string;
   description: string;
   role: string;
-  tags: string[];
+  hardSkillsTags: string[];
+  softSkillsTags: string[];
   language: Language;
 }
 
@@ -36,7 +37,8 @@ const PROJECTS_DATAS: ProjectData[] = [
     endDate: 'July 2021',
     description: 'Silant is mobile application that let everyone control the music played in a party.',
     role: 'Co-founder & Mobile developer',
-    tags: ['React Native', 'Design', 'Marketing'],
+    hardSkillsTags: ['React Native', 'Design', 'Marketing'],
+    softSkillsTags: ['Team: 2', 'Management'],
   },
   {
     title: 'spider-web-server',
@@ -46,7 +48,8 @@ const PROJECTS_DATAS: ProjectData[] = [
     endDate: 'July 2023',
     description: 'HTTP 1.1 Static file with Nginx like feature such as Reverse Proxy and Load Balancer.',
     role: 'Lead software designer & Developer',
-    tags: ['Boost.Asio', 'Cmake', 'SSL / TLS'],
+    hardSkillsTags: ['Boost.Asio', 'Cmake', 'SSL / TLS'],
+    softSkillsTags: ['Team: 4', 'Scrum'],
   },
   {
     title: '42-sh',
@@ -56,7 +59,8 @@ const PROJECTS_DATAS: ProjectData[] = [
     endDate: 'February 2023',
     description: 'POSIX compliant bash like shell language, it can interpret execute large bash scripts with all expected IO.',
     role: 'Developer',
-    tags: ['Bash / POSIX', 'Memory Leaks', 'Lexer', 'Parser'],
+    hardSkillsTags: ['Bash / POSIX', 'Memory Leaks', 'Lexer', 'Parser'],
+    softSkillsTags: ['Team: 4', 'Management', 'Scrum'],
   },
   {
     title: 'tiger-lang',
@@ -66,7 +70,8 @@ const PROJECTS_DATAS: ProjectData[] = [
     endDate: 'June 2023',
     description: 'Tiger is a language made with C++, is has C like control flow and uses LLVM as compiling backend.',
     role: 'Developer',
-    tags: ['Lexer', 'Parser', 'Binder', 'Type check', 'LLVM'],
+    hardSkillsTags: ['Lexer', 'Parser', 'Binder', 'Type check', 'LLVM'],
+    softSkillsTags: ['Team: 4', 'Scrum'],
   },
   {
     title: 'hypnoledge-app',
@@ -76,7 +81,8 @@ const PROJECTS_DATAS: ProjectData[] = [
     endDate: 'July 2022',
     description: 'I worked on Hypnoledge during a mobile app development internship over the course of two months.',
     role: 'Lead Developer',
-    tags: ['React Native', 'Animated'],
+    hardSkillsTags: ['React Native', 'Animated'],
+    softSkillsTags: ['Client relation'],
   },
   {
     title: 'upthumb.io',
@@ -86,7 +92,8 @@ const PROJECTS_DATAS: ProjectData[] = [
     endDate: 'July 2023',
     description: 'SaaS product that let YouTube content creators find the right thumbnail for their videos using automation.',
     role: 'Founder & Developer',
-    tags: ['Next.js', 'Docker', 'Stripe'],
+    hardSkillsTags: ['Next.js', 'Docker', 'Stripe'],
+    softSkillsTags: ['Marketing', 'Client management', 'Financial management'],
   },
 ];
 
@@ -129,14 +136,20 @@ function createProjectElement(project: ProjectData) {
   const languageElt = projectElt.querySelector('.project-language > p') as HTMLElement;
   languageElt.textContent = project.language;
 
-  // set tags
-  const tagsContainerElt = projectElt.querySelector('.project-tags') as HTMLElement;
-  project.tags.forEach(tag => {
+  const createTag = (parent: HTMLElement, tag: string) => {
     const tagElt = document.createElement('p');
     tagElt.classList.add('project-tag');
     tagElt.innerText = tag;
-    tagsContainerElt.appendChild(tagElt);
-  });
+    parent.appendChild(tagElt);
+  };
+
+  // set hard tags
+  const hardTagsContainerElt = projectElt.querySelector('.project-hard-tags') as HTMLElement;
+  project.hardSkillsTags.forEach(tag => createTag(hardTagsContainerElt, tag));
+
+  // set soft tags
+  const softTagsContainerElt = projectElt.querySelector('.project-soft-tags') as HTMLElement;
+  project.softSkillsTags.forEach(tag => createTag(softTagsContainerElt, tag));
 
   // set dates and role
   const dateRoleElt = projectElt.querySelector('.project-footer > p') as HTMLElement;
