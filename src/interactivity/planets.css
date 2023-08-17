@@ -20,7 +20,7 @@
 }
 
 .planet h2 {
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: bold;
   margin: 0;
   margin-top: 10px;
@@ -51,8 +51,8 @@
   image-rendering: -moz-crisp-edges;
   image-rendering: crisp-edges;
 
-  width: 200px;
-  height: 200px;
+  width: 180px;
+  height: 180px;
 }
 
 .planet:not(.active-planet) img:hover {

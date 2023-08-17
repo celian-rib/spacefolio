@@ -79,13 +79,13 @@ div#load-overlay {
 
 #title h1 {
   text-shadow: 0 5px 0 #58aed9;
-  font-size: 4rem;
+  font-size: 3rem;
   margin: 0;
 }
 
 #title span:not(.letter),
 #title p {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   text-shadow: 0 2px 0 #58aed9;
 }
 

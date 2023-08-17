@@ -119,8 +119,8 @@
 
 #projects>h1 {
   position: absolute;
-  left: 50%;
-  top: -10%;
+  right: 10%;
+  bottom: 30%;
   transform: translate(-50%, -50%);
 }
 
@@ -141,13 +141,14 @@
   flex-direction: column;
   justify-content: space-between;
   transform: translate(-50%, -50%);
-  background-color: rgba(68, 78, 87, 0.755);
+  background-color: rgba(45, 64, 81, 0.755);
   
   transition: background-color 0.5s;
 }
 
 .project:hover {
-  background-color: rgba(68, 78, 87, 0.855);
+  background-color: rgba(28, 48, 65, 0.855);
+  cursor: pointer;
 }
 
 .project-main-content {
@@ -163,7 +164,7 @@
 
 .project-header img {
   margin-top: 5px;
-  margin-right: 20px;
+  margin-right: 15px;
 }
 
 .project-header a {
@@ -177,7 +178,7 @@
 }
 
 .project-header p {
-  margin: 2px 0 0 10px;
+  margin: 2px 0 0 20px;
   padding: 3px 5px;
   color: lightgray;
   border: solid grey 1px;
@@ -218,7 +219,7 @@
   margin: 0;
   margin-right: 10px;
   border-radius: 7px;
-  background: rgba(42, 59, 80, 0.53);
+  background: rgba(23, 36, 51, 0.53);
   color: #75B0F9;
   font-size: 13px;
 }
@@ -228,28 +229,3 @@
   margin-bottom: 0;
   color: white;
 }
-
-/* 
-.project header {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-
-}
-
-.project header h3 {
-  font-size: 1.6rem;
-  font-weight: bold;
-}
-
-.project header div {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-}
-
-.project header div p {
-  font-size: 1rem;
-  margin: 0;
-} */

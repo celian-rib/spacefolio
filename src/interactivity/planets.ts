@@ -3,7 +3,7 @@ import TemporaryLayersParallax from '../parallax/temporaryLayersParallax';
 
 import './planets.css';
 
-const PLANET_DISPOSITION_CIRCLE_RADIUS = 450;
+const PLANET_DISPOSITION_CIRCLE_RADIUS = window.innerHeight / 2.3;
 
 const goBackButton = document.getElementById('go-back-button')!;
 const planets = document.querySelectorAll('.planet');

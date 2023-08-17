@@ -147,7 +147,7 @@ function createProjectElement(project: ProjectData) {
 
 function setProjectItemPosition(item: ProjectItem, mouseX: number) {
   const centeredMouseX = mouseX - window.innerWidth / 2;
-  const reducedCenteredMouseX = centeredMouseX * 2;
+  const reducedCenteredMouseX = centeredMouseX * 3;
 
   const radius = window.innerWidth * 2;
 
