@@ -141,12 +141,13 @@
   flex-direction: column;
   justify-content: space-between;
   transform: translate(-50%, -50%);
-
+  background-color: rgba(68, 78, 87, 0.755);
+  
   transition: background-color 0.5s;
 }
 
 .project:hover {
-  background-color: rgba(68, 78, 87, 0.755);
+  background-color: rgba(68, 78, 87, 0.855);
 }
 
 .project-main-content {
