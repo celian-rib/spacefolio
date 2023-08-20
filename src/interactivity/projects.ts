@@ -1,3 +1,5 @@
+import projectsFiles from '../../projects.json';
+
 type Language = 'C++' | 'Typescript' | 'Javascript' | 'C' | 'Java';
 
 interface ProjectData {
@@ -18,6 +20,8 @@ interface ProjectItem {
   element: HTMLElement;
 }
 
+const PROJECTS_DATAS = projectsFiles as ProjectData[];
+
 const LANGUAGE_COLORS: {
   [K in Language]: string;
 } = {
@@ -27,75 +31,6 @@ const LANGUAGE_COLORS: {
   Javascript: '#f1e05a',
   Typescript: '#3178c6 ',
 };
-
-const PROJECTS_DATAS: ProjectData[] = [
-  {
-    title: 'silant-app',
-    status: 'Released',
-    language: 'Typescript',
-    startDate: 'December 2019',
-    endDate: 'July 2021',
-    description: 'Silant is mobile application that let everyone control the music played in a party.',
-    role: 'Co-founder & Mobile developer',
-    hardSkillsTags: ['React Native', 'Design', 'Marketing'],
-    softSkillsTags: ['Team: 2', 'Management'],
-  },
-  {
-    title: 'spider-web-server',
-    status: 'Private',
-    language: 'C++',
-    startDate: 'May 2023',
-    endDate: 'July 2023',
-    description: 'HTTP 1.1 Static file with Nginx like feature such as Reverse Proxy and Load Balancer.',
-    role: 'Lead software designer & Developer',
-    hardSkillsTags: ['Boost.Asio', 'Cmake', 'SSL / TLS'],
-    softSkillsTags: ['Team: 4', 'Scrum'],
-  },
-  {
-    title: '42-sh',
-    status: 'Private',
-    language: 'C',
-    startDate: 'January 2023',
-    endDate: 'February 2023',
-    description: 'POSIX compliant bash like shell language, it can interpret execute large bash scripts with all expected IO.',
-    role: 'Developer',
-    hardSkillsTags: ['Bash / POSIX', 'Memory Leaks', 'Lexer', 'Parser'],
-    softSkillsTags: ['Team: 4', 'Management', 'Scrum'],
-  },
-  {
-    title: 'tiger-lang',
-    status: 'Private',
-    language: 'C++',
-    startDate: 'March 2023',
-    endDate: 'June 2023',
-    description: 'Tiger is a language made with C++, is has C like control flow and uses LLVM as compiling backend.',
-    role: 'Developer',
-    hardSkillsTags: ['Lexer', 'Parser', 'Binder', 'Type check', 'LLVM'],
-    softSkillsTags: ['Team: 4', 'Scrum'],
-  },
-  {
-    title: 'hypnoledge-app',
-    status: 'Released',
-    language: 'Javascript',
-    startDate: 'May 2022',
-    endDate: 'July 2022',
-    description: 'I worked on Hypnoledge during a mobile app development internship over the course of two months.',
-    role: 'Lead Developer',
-    hardSkillsTags: ['React Native', 'Animated'],
-    softSkillsTags: ['Client relation'],
-  },
-  {
-    title: 'upthumb.io',
-    status: 'Released',
-    language: 'Typescript',
-    startDate: 'May 2023',
-    endDate: 'July 2023',
-    description: 'SaaS product that let YouTube content creators find the right thumbnail for their videos using automation.',
-    role: 'Founder & Developer',
-    hardSkillsTags: ['Next.js', 'Docker', 'Stripe'],
-    softSkillsTags: ['Marketing', 'Client management', 'Financial management'],
-  },
-];
 
 const PROJECTS: ProjectItem[] = [];
 const animationData = {

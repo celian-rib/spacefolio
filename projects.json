@@ -1,0 +1,115 @@
+[
+    {
+        "title": "tiger-lang",
+        "status": "Private",
+        "language": "C++",
+        "startDate": "March 2023",
+        "endDate": "June 2023",
+        "description": "Experimental progrramming language that uses custom made frontend architecture and LLVM for target compilation.",
+        "role": "Developer",
+        "hardSkillsTags": [
+            "Lexer",
+            "Parser",
+            "Binder",
+            "Type check",
+            "LLVM"
+        ],
+        "softSkillsTags": [
+            "Team: 4",
+            "Scrum"
+        ]
+    },
+    {
+        "title": "upthumb.io",
+        "status": "Released",
+        "language": "Typescript",
+        "startDate": "May 2023",
+        "endDate": "July 2023",
+        "description": "SaaS product that let YouTube content creators find the right thumbnail for their videos using automation.",
+        "role": "Founder & Developer",
+        "hardSkillsTags": [
+            "Next.js",
+            "Docker",
+            "Stripe"
+        ],
+        "softSkillsTags": [
+            "Marketing",
+            "Client management",
+            "Financial management"
+        ],
+        "link": "https://upthumb.io"
+    },
+    {
+        "title": "silant-app",
+        "status": "Released",
+        "language": "Typescript",
+        "startDate": "December 2019",
+        "endDate": "July 2021",
+        "description": "Silant is mobile application that let everyone control the music played in a party.",
+        "role": "Co-founder & Mobile developer",
+        "hardSkillsTags": [
+            "React Native",
+            "Design",
+            "Marketing"
+        ],
+        "softSkillsTags": [
+            "Team: 2",
+            "Management"
+        ],
+        "link": "https://silant.net"
+    },
+    {
+        "title": "spider-web-server",
+        "status": "Private",
+        "language": "C++",
+        "startDate": "May 2023",
+        "endDate": "July 2023",
+        "description": "HTTP 1.1 Static file server with Nginx like features such as Reverse Proxying and Load Balancing.",
+        "role": "Lead software designer & Developer",
+        "hardSkillsTags": [
+            "Boost.Asio",
+            "Cmake",
+            "SSL / TLS"
+        ],
+        "softSkillsTags": [
+            "Team: 4",
+            "Scrum"
+        ]
+    },
+    {
+        "title": "42-sh",
+        "status": "Private",
+        "language": "C",
+        "startDate": "January 2023",
+        "endDate": "February 2023",
+        "description": "Bash like shell language made from scratch. It can interpret & execute large bash scripts.",
+        "role": "Developer",
+        "hardSkillsTags": [
+            "Bash / POSIX",
+            "Compiler Frontend",
+            "Unix IO"
+        ],
+        "softSkillsTags": [
+            "Team: 4",
+            "Management",
+            "Scrum"
+        ]
+    },
+    {
+        "title": "hypnoledge-app",
+        "status": "Released",
+        "language": "Javascript",
+        "startDate": "May 2022",
+        "endDate": "July 2022",
+        "description": "Mobile app that let you learn new language under hypnosis (Internship project).",
+        "role": "Main Developer",
+        "hardSkillsTags": [
+            "React Native",
+            "Animated"
+        ],
+        "softSkillsTags": [
+            "Client relation"
+        ],
+        "link": "https://hypnoledge.com"
+    }
+]
