@@ -57,7 +57,7 @@
 
 .planet:not(.active-planet) img:hover {
   cursor: pointer;
-  filter: drop-shadow(0 3px 0 white) drop-shadow(0 -3px 0 white) drop-shadow(3px 0 0 white) drop-shadow(-3px 0 0 white);
+  filter: drop-shadow(0 2px 0 white) drop-shadow(0 -2px 0 white) drop-shadow(2px 0 0 white) drop-shadow(-2px 0 0 white);
 }
 
 .bg-planet {
@@ -165,6 +165,6 @@
 
 #go-back-button:hover {
   cursor: pointer;
-  background-color: rgba(255, 255, 255, 0.17);
+  background-color: rgba(28, 48, 65, 0.855);
 }
 

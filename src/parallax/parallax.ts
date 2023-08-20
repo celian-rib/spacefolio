@@ -312,7 +312,7 @@ export default class Parrallax {
 
     const res = {
       x: (centMousePos.x * layerPaddingToScreen.width) / (screenWidth / 2),
-      y: (centMousePos.y * layerPaddingToScreen.height) / (screenHeight / 2),
+      y: (centMousePos.y * layerPaddingToScreen.height) / screenHeight,
     };
 
     return res;

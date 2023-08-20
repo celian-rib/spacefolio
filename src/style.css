@@ -177,4 +177,7 @@ footer {
   -webkit-backdrop-filter: blur(10px);
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.18);
+
+  transition: background-color 0.5s;
+  background-color: rgba(45, 64, 81, 0.755);
 }

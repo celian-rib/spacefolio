@@ -43,7 +43,7 @@
 }
 
 #links {
-  top: 63%;
+  top: 55%;
   left: 45%;
 }
 
@@ -71,8 +71,8 @@
 }
 
 #about-me {
-  top: 33%;
-  left: 40%;
+  top: 37%;
+  left: 45%;
 }
 
 #about-me a {
@@ -117,13 +117,6 @@
   width: 100%;
 }
 
-#projects>h1 {
-  position: absolute;
-  right: 10%;
-  bottom: 30%;
-  transform: translate(-50%, -50%);
-}
-
 .project {
   pointer-events: all;
   font-family: sans-serif;
@@ -141,9 +134,6 @@
   flex-direction: column;
   justify-content: space-between;
   transform: translate(-50%, -50%);
-  background-color: rgba(45, 64, 81, 0.755);
-  
-  transition: background-color 0.5s;
 }
 
 .project:hover {
