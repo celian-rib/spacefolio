@@ -12,6 +12,7 @@ interface ProjectData {
   hardSkillsTags: string[];
   softSkillsTags: string[];
   language: Language;
+  link?: string;
 }
 
 interface ProjectItem {
@@ -45,15 +46,14 @@ PROJECT_ITEM_TEMPLATE.remove();
 
 function createProjectElement(project: ProjectData) {
   // duplicate template
-  const projectElt = PROJECT_ITEM_TEMPLATE.cloneNode(true) as HTMLElement;
+  const projectElt = PROJECT_ITEM_TEMPLATE.cloneNode(true) as HTMLLinkElement;
   projectElt.removeAttribute('id');
   projectElt.classList.remove('hidden');
 
   // set title
-  const titleElt = projectElt.querySelector('.project-header > a') as HTMLElement;
-  titleElt.textContent = project.title;
-
-  // TODO set link
+  const titleElt = projectElt.querySelector('.project-header > a') as HTMLLinkElement;
+  titleElt.innerHTML = project.title;
+  titleElt.href = project.link ?? '';
 
   // set status
   const statusElt = projectElt.querySelector('.project-header > p') as HTMLElement;
@@ -90,6 +90,11 @@ function createProjectElement(project: ProjectData) {
   const dateRoleElt = projectElt.querySelector('.project-footer > p') as HTMLElement;
   dateRoleElt.innerText = `${project.startDate} - ${project.endDate ?? 'now'} • ${project.role}`;
 
+  if (project.link != null) {
+    projectElt.onclick = () => {
+      window.open(project.link, 'blank_');
+    };
+  }
   return projectElt;
 }
 
