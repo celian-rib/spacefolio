@@ -5,7 +5,7 @@
         "language": "C++",
         "startDate": "March 2023",
         "endDate": "June 2023",
-        "description": "Experimental progrramming language that uses custom made frontend architecture and LLVM for target compilation.",
+        "description": "Experimental progrramming language that uses custom made frontend architecture and LLVM as backend.",
         "role": "Developer",
         "hardSkillsTags": [
             "Lexer",

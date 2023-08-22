@@ -126,8 +126,8 @@
 
   position: absolute;
 
-  left: calc(50% + var(--x));
-  top: calc(20% + var(--y));
+  left: calc(80% + var(--x));
+  top: calc(50% + var(--y));
 
   padding: 20px;
   display: flex;

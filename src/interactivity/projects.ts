@@ -34,8 +34,8 @@ const LANGUAGE_COLORS: {
 
 const PROJECTS: ProjectItem[] = [];
 const animationData = {
-  targetMouseX: 0,
-  currentMouseX: 0,
+  targetMouseY: 0,
+  currentMouseY: 0,
 };
 
 const PROJECTS_CONTAINER = document.getElementById('projects-container') as HTMLElement;
@@ -93,23 +93,23 @@ function createProjectElement(project: ProjectData) {
   return projectElt;
 }
 
-function setProjectItemPosition(item: ProjectItem, mouseX: number) {
-  const centeredMouseX = mouseX - window.innerWidth / 2;
-  const reducedCenteredMouseX = centeredMouseX * 3;
+function setProjectItemPosition(item: ProjectItem, mouseY: number) {
+  const centeredMouseY = mouseY - window.innerHeight / 2;
+  const reducedCenteredMouseY = centeredMouseY * 4;
 
-  const radius = window.innerWidth * 2;
+  const radius = window.innerHeight * 1.3;
 
-  const spreadAngle = Math.PI / 3;
+  const spreadAngle = Math.PI / 2;
 
-  const initialOffset = Math.PI;
+  const initialOffset = -spreadAngle / 2;
 
-  const mouseOffset = -(reducedCenteredMouseX / window.innerWidth) * (spreadAngle / PROJECTS_DATAS.length);
+  const mouseOffset = -(reducedCenteredMouseY / window.innerHeight) * (spreadAngle / PROJECTS_DATAS.length);
 
   const offsetAngle = initialOffset + mouseOffset;
-  const rotateAngle = spreadAngle + (spreadAngle / (PROJECTS_DATAS.length - 1)) * item.index + offsetAngle;
+  const rotateAngle = (spreadAngle / (PROJECTS_DATAS.length - 1)) * item.index + offsetAngle;
 
-  const x = Math.cos(rotateAngle) * radius;
-  const y = Math.sin(rotateAngle) * radius + radius;
+  const x = Math.cos(rotateAngle) * radius - radius;
+  const y = Math.sin(rotateAngle) * radius;
 
   item.element.style.setProperty('--x', `${x}px`);
   item.element.style.setProperty('--y', `${y}px`);
@@ -117,7 +117,7 @@ function setProjectItemPosition(item: ProjectItem, mouseX: number) {
 
 function handleMouseMovements() {
   window.addEventListener('mousemove', event => {
-    animationData.targetMouseX = event.clientX;
+    animationData.targetMouseY = event.clientY;
   });
 }
 
@@ -127,11 +127,11 @@ function animationLoop() {
   const animate = () => {
     requestAnimationFrame(animate);
 
-    const { currentMouseX, targetMouseX } = animationData;
+    const { currentMouseY, targetMouseY } = animationData;
 
-    animationData.currentMouseX = lerp(currentMouseX, targetMouseX, 0.1);
+    animationData.currentMouseY = lerp(currentMouseY, targetMouseY, 0.1);
     PROJECTS.forEach(project => {
-      setProjectItemPosition(project, animationData.currentMouseX);
+      setProjectItemPosition(project, animationData.currentMouseY);
     });
   };
 
