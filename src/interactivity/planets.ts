@@ -5,7 +5,8 @@ import './planets.css';
 
 const PLANET_DISPOSITION_CIRCLE_RADIUS = window.innerHeight / 2.3;
 
-const goBackButton = document.getElementById('go-back-button')!;
+const title = document.getElementById('title')!;
+const goBackButton = document.getElementById('go-back-button')! as HTMLElement;
 const planets = document.querySelectorAll('.planet');
 
 setPlanetsPositions();
@@ -61,6 +62,16 @@ function hideGoBackButton() {
   goBackButton.style.display = 'none';
 }
 
+function showTitle() {
+  title.classList.remove('fade-out');
+  title.classList.add('fade-in');
+}
+
+function hideTitle() {
+  title.classList.remove('fade-in');
+  title.classList.add('fade-out');
+}
+
 function createContentParallaxLayer(parallax: TemporaryLayersParallax, contentBody: HTMLElement | null) {
   const layerElt = parallax.createTemporyLayer();
   layerElt.classList.add('fade-initial-0');
@@ -82,7 +93,6 @@ function createFocusedStateListener(unfocus: () => void) {
 function deleteFocusedStateListeners(unfocus: () => void) {
   window.removeEventListener('popstate', unfocus);
   goBackButton.removeEventListener('click', unfocus);
-  goBackButton.style.display = 'none';
 }
 
 function hidePlanetContent(planet: Element) {
@@ -105,6 +115,7 @@ export default function registerPlanetsInteractivity(parallax: TemporaryLayersPa
     const focusPlanet = (): void => {
       parallaxZoomToPlanet(i, parallax);
       showGoBackButton();
+      hideTitle();
       createContentParallaxLayer(parallax, getPlanetContentElt(planet));
       planet.classList.add('active-planet');
     };
@@ -112,6 +123,8 @@ export default function registerPlanetsInteractivity(parallax: TemporaryLayersPa
     const unfocusPlanet = (): void => {
       parallaxZoomReset(parallax);
       deleteFocusedStateListeners(unfocusPlanet);
+      showTitle();
+      hideGoBackButton();
       parallax.deleteAllTemporaryLayers();
       hidePlanetContent(planet);
       setTimeout(() => planet.classList.remove('active-planet'), 1000);

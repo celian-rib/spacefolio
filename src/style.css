@@ -74,7 +74,7 @@ div#load-overlay {
 
   color: #fff;
   text-align: center;
-  pointer-events: all;
+  pointer-events: all !important;
 }
 
 #title h1 {
